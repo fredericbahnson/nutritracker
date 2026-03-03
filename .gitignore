@@ -1,0 +1,19 @@
+# Xcode user state (machine-specific, never commit)
+xcuserdata/
+*.xcuserstate
+**/*.xcworkspace/xcuserdata/
+
+# Derived data & build output
+DerivedData/
+.build/
+*.ipa
+*.dSYM
+*.dSYM.zip
+
+# macOS metadata
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Swift Package Manager
+.swiftpm/
