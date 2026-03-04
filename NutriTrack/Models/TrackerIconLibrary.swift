@@ -22,7 +22,7 @@ enum TrackerIconLibrary {
 
     static let all: [TrackerIcon] = [
         // Nutrition
-        TrackerIcon(id: "dna",             displayName: "DNA / Protein",    category: "Nutrition"),
+        TrackerIcon(id: "figure.strengthtraining.traditional", displayName: "Strength / Protein", category: "Nutrition"),
         TrackerIcon(id: "fork.knife",      displayName: "Meals",            category: "Nutrition"),
         TrackerIcon(id: "leaf",            displayName: "Vegetables",       category: "Nutrition"),
         TrackerIcon(id: "flame",           displayName: "Calories",         category: "Nutrition"),

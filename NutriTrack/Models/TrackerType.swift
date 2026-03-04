@@ -33,7 +33,7 @@ struct TrackerType: Identifiable, Hashable {
             pieColor: "#E8601C",
             ringColor: "#F4A261",
             barColor: "#E76F51",
-            iconName: "dna",
+            iconName: "figure.strengthtraining.traditional",
             labelColor: "#FFFFFF"
         ),
         TrackerType(
