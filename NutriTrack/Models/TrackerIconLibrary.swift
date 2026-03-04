@@ -48,52 +48,79 @@ enum TrackerIconLibrary {
     // MARK: - Custom path: double helix
 
     static func helixPath(in rect: CGRect) -> Path {
+        var path = Path()
+
+        // ── Geometry constants ────────────────────────────────────────────────
         let inset     = rect.width * 0.12
         let left      = rect.minX + inset
         let right     = rect.maxX - inset
         let top       = rect.minY + inset
         let bottom    = rect.maxY - inset
-        let height    = bottom - top
+
+        let usableW   = right - left
+        let usableH   = bottom - top
         let centerX   = rect.midX
-        let amplitude = (right - left) / 2
-        let periods   = 2
-        let steps     = 60
+        let periods   = 2.0              // 2 full sine periods → 4 half-period segments
+        let segments  = Int(periods * 2) // = 4
 
-        var path = Path()
+        // ── Helpers ───────────────────────────────────────────────────────────
+        func yPos(_ t: Double) -> Double { top + usableH * t }
 
-        // Strand A
-        for i in 0...steps {
-            let t     = Double(i) / Double(steps)
-            let angle = t * Double(periods) * 2 * .pi
-            let x     = centerX + amplitude * sin(angle)
-            let y     = top + height * t
-            let pt    = CGPoint(x: x, y: y)
-            if i == 0 { path.move(to: pt) } else { path.addLine(to: pt) }
+        // Strand A: sin(angle), Strand B: its mirror across centerX
+        func xA(_ t: Double) -> Double {
+            let angle = t * periods * 2 * Double.pi
+            return centerX + (usableW * 0.5) * 0.5 * sin(angle)
+        }
+        func xB(_ t: Double) -> Double { 2 * centerX - xA(t) }
+
+        // ── Draw strands as cubic Bézier curves ───────────────────────────────
+        // Each half-period segment is one cubic Bézier. Control points at 35% of
+        // segment height from each endpoint, x held at endpoint x-value. This
+        // produces the characteristic elongated S-curve of a projected helix strand.
+        let segH = 1.0 / Double(segments)
+
+        func addSegment(to p: inout Path, t0: Double, t1: Double,
+                        xFunc: (Double) -> Double) {
+            let p0    = CGPoint(x: xFunc(t0), y: yPos(t0))
+            let p3    = CGPoint(x: xFunc(t1), y: yPos(t1))
+            // Push control-point x to the half-period's amplitude peak (×4/3 for Bézier accuracy)
+            let peakX = centerX + (xFunc((t0 + t1) / 2) - centerX) * (4.0 / 3.0)
+            let cp1   = CGPoint(x: peakX, y: yPos(t0 + segH / 3))
+            let cp2   = CGPoint(x: peakX, y: yPos(t1 - segH / 3))
+            p.move(to: p0)
+            p.addCurve(to: p3, control1: cp1, control2: cp2)
         }
 
-        // Strand B (half-period offset)
-        for i in 0...steps {
-            let t     = Double(i) / Double(steps)
-            let angle = t * Double(periods) * 2 * .pi
-            let x     = centerX + amplitude * sin(angle + .pi)
-            let y     = top + height * t
-            let pt    = CGPoint(x: x, y: y)
-            if i == 0 { path.move(to: pt) } else { path.addLine(to: pt) }
+        for i in 0..<segments {
+            let t0 = Double(i) * segH
+            let t1 = Double(i + 1) * segH
+            addSegment(to: &path, t0: t0, t1: t1, xFunc: xA)
+            addSegment(to: &path, t0: t0, t1: t1, xFunc: xB)
         }
 
-        // Cross-bars at quarter-period crossings: angle = π/2 + k*π, k = 0...3
-        let totalAngle = Double(periods) * 2 * .pi
-        for k in 0..<(periods * 2) {
-            let angle = Double.pi / 2 + Double(k) * .pi
-            let t     = angle / totalAngle
-            let xA    = centerX + amplitude * sin(angle)
-            let xB    = centerX + amplitude * sin(angle + .pi)
-            let y     = top + height * t
-            path.move(to: CGPoint(x: xA, y: y))
-            path.addLine(to: CGPoint(x: xB, y: y))
+        // ── Draw cross-bars at interior strand crossings only ─────────────────
+        // Crossings occur at segment boundaries: t = k * segH for k = 1, 2, 3.
+        // Exclude k=0 and k=segments (top and bottom endpoints) — bars there
+        // close the icon into a rectangle and hurt readability at small sizes.
+        // At each crossing, xA(t) == xB(t) == centerX by construction, so the
+        // bar is always centered. Span 40% of usable width (20% each side).
+        let barHalfWidth = usableW * 0.20
+
+        for k in 1..<segments {
+            let t = Double(k) * segH
+            let y = yPos(t)
+            path.move(to:    CGPoint(x: centerX - barHalfWidth, y: y))
+            path.addLine(to: CGPoint(x: centerX + barHalfWidth, y: y))
         }
 
-        return path
+        // ── Rotate 20° clockwise around the rect center ───────────────────────
+        // Rotating around rect.mid keeps the icon centered in its frame.
+        let angle = CGFloat(20 * Double.pi / 180)
+        var transform = CGAffineTransform(translationX: rect.midX, y: rect.midY)
+        transform = transform.rotated(by: angle)
+        transform = transform.translatedBy(x: -rect.midX, y: -rect.midY)
+
+        return path.applying(transform)
     }
 
     // MARK: - Custom path: wheat stalk with branch pairs
