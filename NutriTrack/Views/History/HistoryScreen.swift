@@ -9,7 +9,8 @@ struct HistoryScreen: View {
 
     @StateObject private var historyVM = HistoryViewModel()
 
-    @State private var isListView: Bool = false
+    private enum HistoryContentMode { case heatmap, barGraph, list }
+    @State private var contentMode: HistoryContentMode = .heatmap
     @State private var viewMode: ViewMode = .weekly
 
     private enum ViewMode: String, CaseIterable {
@@ -33,7 +34,7 @@ struct HistoryScreen: View {
                 }
 
                 // Weekly / Monthly picker (only when not in list view)
-                if !isListView {
+                if contentMode != .list {
                     Picker("View", selection: $viewMode) {
                         ForEach(ViewMode.allCases, id: \.self) { mode in
                             Text(mode.rawValue).tag(mode)
@@ -49,13 +50,8 @@ struct HistoryScreen: View {
                 // Content
                 if let tracker = selectedTracker {
                     Group {
-                        if isListView {
-                            HistoryListView(
-                                tracker: tracker,
-                                dailyTotals: historyVM.dailyTotals
-                            )
-                            .environmentObject(themeColors)
-                        } else {
+                        switch contentMode {
+                        case .heatmap:
                             ScrollView {
                                 VStack(spacing: 16) {
                                     switch viewMode {
@@ -76,6 +72,15 @@ struct HistoryScreen: View {
                                     }
                                 }
                             }
+                        case .barGraph:
+                            BarGraphView(tracker: tracker, isWeekly: viewMode == .weekly)
+                                .environmentObject(historyVM)
+                        case .list:
+                            HistoryListView(
+                                tracker: tracker,
+                                dailyTotals: historyVM.dailyTotals
+                            )
+                            .environmentObject(themeColors)
                         }
                     }
                     .task(id: historyVM.selectedTrackerID) {
@@ -93,16 +98,29 @@ struct HistoryScreen: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Button {
-                        isListView.toggle()
-                    } label: {
-                        Image(systemName: isListView ? "chart.bar.fill" : "list.bullet")
-                            .font(.system(size: 18))
-                    }
-                    .accessibilityLabel(isListView ? "Switch to heatmap view" : "Switch to list view")
-                }
+                    HStack(spacing: 20) {
+                        Button { contentMode = .heatmap } label: {
+                            Image(systemName: "square.grid.3x3.fill")
+                                .font(.system(size: 18))
+                                .foregroundStyle(contentMode == .heatmap ? Color(.label) : Color(.tertiaryLabel))
+                        }
+                        .accessibilityLabel("Heatmap view")
 
-                ToolbarItem(placement: .bottomBar) { Spacer() }
+                        Button { contentMode = .barGraph } label: {
+                            Image(systemName: "chart.bar.fill")
+                                .font(.system(size: 18))
+                                .foregroundStyle(contentMode == .barGraph ? Color(.label) : Color(.tertiaryLabel))
+                        }
+                        .accessibilityLabel("Bar graph view")
+
+                        Button { contentMode = .list } label: {
+                            Image(systemName: "list.bullet")
+                                .font(.system(size: 18))
+                                .foregroundStyle(contentMode == .list ? Color(.label) : Color(.tertiaryLabel))
+                        }
+                        .accessibilityLabel("List view")
+                    }
+                }
 
                 ToolbarItem(placement: .bottomBar) {
                     Button {

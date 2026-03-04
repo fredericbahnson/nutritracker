@@ -82,4 +82,29 @@ enum DateHelpers {
         formatter.dateStyle = .none
         return formatter.string(from: date)
     }
+
+    /// Returns the 7 dates (Mon→Sun) for the week `weekOffset` weeks from today.
+    /// weekOffset 0 = current week, -1 = last week, etc.
+    static func datesInWeek(offsetBy weekOffset: Int) -> [Date] {
+        let cal = Calendar.current
+        let today = Date()
+        let weekday = cal.component(.weekday, from: today)
+        let daysSinceMonday = (weekday + 5) % 7
+        let thisMonday = cal.date(byAdding: .day, value: -daysSinceMonday,
+                                  to: cal.startOfDay(for: today))!
+        let targetMonday = cal.date(byAdding: .weekOfYear, value: weekOffset,
+                                    to: thisMonday)!
+        return (0..<7).compactMap { cal.date(byAdding: .day, value: $0, to: targetMonday) }
+    }
+
+    /// Returns every date in the calendar month `monthOffset` months from today.
+    /// monthOffset 0 = this month, -1 = last month, etc.
+    static func datesInMonth(offsetBy monthOffset: Int) -> [Date] {
+        let cal = Calendar.current
+        let target = cal.date(byAdding: .month, value: monthOffset, to: Date())!
+        let comps = cal.dateComponents([.year, .month], from: target)
+        let first = cal.date(from: comps)!
+        let days = cal.range(of: .day, in: .month, for: first)!.count
+        return (0..<days).compactMap { cal.date(byAdding: .day, value: $0, to: first) }
+    }
 }
