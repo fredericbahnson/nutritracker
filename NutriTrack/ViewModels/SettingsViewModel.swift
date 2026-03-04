@@ -28,6 +28,18 @@ final class SettingsViewModel: ObservableObject {
         presets = QuickAddPreset.load(from: quickAddPresetsData) ?? QuickAddPreset.defaults
         waterUnit = WaterUnit(rawValue: waterUnitRaw) ?? .flOz
 
+        // Migrate stale icon names from previous builds
+        if trackers.contains(where: { $0.iconName == "dna" || $0.iconName == "figure.strengthtraining.traditional" }) {
+            trackers = trackers.map { tracker in
+                var t = tracker
+                if t.iconName == "dna" || t.iconName == "figure.strengthtraining.traditional" {
+                    t.iconName = "custom.helix"
+                }
+                return t
+            }
+            saveTrackers()
+        }
+
         // Update water unit display on trackers
         updateWaterUnitDisplay()
     }

@@ -252,4 +252,37 @@ final class NutriTrackTests: XCTestCase {
         XCTAssertEqual(TrackerWheelView.formatStatText(logged: 0,     goal: 120,   unit: "oz"), "0/120 oz")
         XCTAssertEqual(TrackerWheelView.formatStatText(logged: 100.5, goal: 200.5, unit: "ml"), "100.5/200.5 ml")
     }
+
+    // MARK: - Custom helix icon
+
+    func testHelixIconExistsInLibrary() {
+        let helix = TrackerIconLibrary.all.first { $0.id == "custom.helix" }
+        XCTAssertNotNil(helix)
+        XCTAssertTrue(helix?.isCustomPath == true)
+    }
+
+    func testHelixPathIsNonEmpty() {
+        let path = TrackerIconLibrary.helixPath(in: CGRect(x: 0, y: 0, width: 28, height: 28))
+        XCTAssertFalse(path.boundingRect == .zero)
+    }
+
+    func testHelixPathFitsInBounds() {
+        let rect = CGRect(x: 0, y: 0, width: 28, height: 28)
+        let path = TrackerIconLibrary.helixPath(in: rect)
+        let bounds = path.boundingRect
+        let tolerance: CGFloat = 0.5
+        XCTAssertGreaterThanOrEqual(bounds.minX, rect.minX - tolerance)
+        XCTAssertGreaterThanOrEqual(bounds.minY, rect.minY - tolerance)
+        XCTAssertLessThanOrEqual(bounds.maxX, rect.maxX + tolerance)
+        XCTAssertLessThanOrEqual(bounds.maxY, rect.maxY + tolerance)
+    }
+
+    func testDNASFSymbolEntryNoLongerExists() {
+        XCTAssertNil(TrackerIconLibrary.all.first { $0.id == "dna" })
+    }
+
+    func testProteinDefaultIconIsHelix() {
+        let protein = TrackerType.defaults.first { $0.id == "protein" }
+        XCTAssertEqual(protein?.iconName, "custom.helix")
+    }
 }
