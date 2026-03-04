@@ -4,12 +4,14 @@ import SwiftUI
 
 private enum SettingsSheet: Identifiable {
     case addTracker
+    case editTracker(TrackerType)
     case addPreset(TrackerType)
     case editPreset(TrackerType, QuickAddPreset)
 
     var id: String {
         switch self {
         case .addTracker:                return "addTracker"
+        case .editTracker(let t):        return "editTracker-\(t.id)"
         case .addPreset(let t):          return "addPreset-\(t.id)"
         case .editPreset(let t, let p):  return "editPreset-\(t.id)-\(p.id)"
         }
@@ -47,6 +49,9 @@ struct SettingsScreen: View {
                 case .addTracker:
                     TrackerConfigView(existingTracker: nil)
                         .environmentObject(settingsVM)
+                case .editTracker(let tracker):
+                    TrackerConfigView(existingTracker: tracker)
+                        .environmentObject(settingsVM)
                 case .addPreset(let tracker):
                     PresetFormSheet(tracker: tracker, preset: nil)
                         .environmentObject(settingsVM)
@@ -73,6 +78,15 @@ struct SettingsScreen: View {
                             )
                         )
                         .accessibilityLabel("Toggle \(tracker.displayName) tracker")
+
+                        Button {
+                            activeSheet = .editTracker(tracker)
+                        } label: {
+                            Image(systemName: "pencil")
+                                .foregroundStyle(Color(.secondaryLabel))
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel("Edit \(tracker.displayName) tracker")
                     }
                 }
                 .onMove { source, dest in
