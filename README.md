@@ -128,7 +128,7 @@ See [DECISIONS.md](DECISIONS.md) for a full table of architectural choices and t
 
 ## Widget
 
-The WidgetKit extension target is stubbed with an App Group entitlement (`group.com.nutritrack`) so the Core Data store can be shared with a future widget. See [NutriTrackWidget/WIDGET_TODO.md](NutriTrackWidget/WIDGET_TODO.md) for what remains to be implemented.
+The WidgetKit extension target is stubbed with an App Group entitlement (`group.com.fredericbahnson.nutritrack`) so the Core Data store can be shared with a future widget. See [NutriTrackWidget/WIDGET_TODO.md](NutriTrackWidget/WIDGET_TODO.md) for what remains to be implemented.
 
 ---
 

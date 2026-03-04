@@ -5,10 +5,10 @@ This file documents what needs to be done to fully implement the NutriTrack widg
 ## Prerequisites
 
 ### App Group (already configured)
-- App group `group.com.nutritrack` is configured on both `NutriTrack` and `NutriTrackWidget` targets.
+- App group `group.com.fredericbahnson.nutritrack` is configured on both `NutriTrack` and `NutriTrackWidget` targets.
 - The Core Data store uses the App Group container URL:
   ```swift
-  FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.nutritrack")
+  FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.fredericbahnson.nutritrack")
   ```
 
 ## Steps to Implement
@@ -39,7 +39,7 @@ struct TrackerSnapshot {
 
 ### 3. Provider implementation
 - In `getTimeline`, fetch today's `LogEntry` records grouped by `trackerID`.
-- Read active trackers from `UserDefaults(suiteName: "group.com.nutritrack")`.
+- Read active trackers from `UserDefaults(suiteName: "group.com.fredericbahnson.nutritrack")`.
 - Build a `Timeline` with one entry per hour (or at day-reset midnight).
 - Refresh policy: `.after(nextMidnight)` so the widget resets at midnight.
 
@@ -54,7 +54,7 @@ struct TrackerSnapshot {
 - Handle in `NutriTrackApp.onOpenURL`.
 
 ### 6. Shared UserDefaults
-- Move all `@AppStorage` keys to `UserDefaults(suiteName: "group.com.nutritrack")` in `SettingsViewModel`.
+- Move all `@AppStorage` keys to `UserDefaults(suiteName: "group.com.fredericbahnson.nutritrack")` in `SettingsViewModel`.
 - Widget reads tracker configs from the same suite.
 
 ## Timeline Refresh Strategy

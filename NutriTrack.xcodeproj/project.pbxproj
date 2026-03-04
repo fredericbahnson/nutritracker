@@ -14,6 +14,7 @@
 		17A224800377C30975925A91 /* TodayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556989F3DD271CCC1677CC51 /* TodayViewModel.swift */; };
 		19E8B2E006D347015E975E6C /* NumericKeypadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88584D51D6E0C465CA2A3F84 /* NumericKeypadView.swift */; };
 		1B172A0892E2392460F2F4C6 /* WeeklyHeatmapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AA6C576C2A54D3C30535B6 /* WeeklyHeatmapView.swift */; };
+		1D5832F8982A1707CF3DE445 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E422750F202E764DA574862 /* Assets.xcassets */; };
 		2221C8B74E35B91FF73DEA3C /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB737218B37521EB58A97066 /* SettingsViewModel.swift */; };
 		265CF2CF8503666E70EEB28B /* PresetsEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67BE2C376CF6B67DD7BDC5E3 /* PresetsEditorView.swift */; };
 		32EFF6C3022D52E7FCA2E2F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00EC0B1E47F4EEAA5E984803 /* Assets.xcassets */; };
@@ -27,6 +28,7 @@
 		7A404A0B9B5D94FF22688969 /* ColorPickerSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9382AFFBEA08D0D722B67A80 /* ColorPickerSection.swift */; };
 		7ABC1A71A41A44E54E5681CC /* HeatmapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E51EFF32A19F792B0BEF28A /* HeatmapView.swift */; };
 		83CBAFAFA4E58B9444A37E5E /* TrackerIconLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52298FE951DF530BD778F6F4 /* TrackerIconLibrary.swift */; };
+		84EE386614E157F50FAAD88C /* NutriTrackWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3A2C6C6948705C4715113C1E /* NutriTrackWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		8ABDC09E30B8C04D87E2425D /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EA0A4AE918933D6592032F4 /* WidgetKit.framework */; };
 		8DC40D2DA1A9FAC0F0484834 /* QuickAddPreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5085BD966E7A2CF29C43CFD6 /* QuickAddPreset.swift */; };
 		95B23F365DF460C28DBCF570 /* NutriTrackWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96422D85ABCD655F9D0E13F /* NutriTrackWidget.swift */; };
@@ -48,6 +50,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		45972C4F6CF006254AE66331 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F2A03AFED788DD893DEDFC75 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EAE84E528D30446C47E780DB;
+			remoteInfo = NutriTrackWidget;
+		};
 		A288108979970C2F0C595BC0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F2A03AFED788DD893DEDFC75 /* Project object */;
@@ -56,6 +65,20 @@
 			remoteInfo = NutriTrack;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8B2CAD8C0D9056394B9D11B1 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				84EE386614E157F50FAAD88C /* NutriTrackWidget.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		00EC0B1E47F4EEAA5E984803 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -67,6 +90,7 @@
 		394F89169FBA9A72E00BB3EC /* DateHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelpers.swift; sourceTree = "<group>"; };
 		39C49BDFFE4A5A6BD1C3079C /* NutriTrackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutriTrackTests.swift; sourceTree = "<group>"; };
 		3A2C6C6948705C4715113C1E /* NutriTrackWidget.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = NutriTrackWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		3E422750F202E764DA574862 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3EE863B431F73081BA063333 /* NutriTrackApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutriTrackApp.swift; sourceTree = "<group>"; };
 		5085BD966E7A2CF29C43CFD6 /* QuickAddPreset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickAddPreset.swift; sourceTree = "<group>"; };
 		52298FE951DF530BD778F6F4 /* TrackerIconLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerIconLibrary.swift; sourceTree = "<group>"; };
@@ -228,6 +252,7 @@
 		B1321727691B1488595D6A17 /* NutriTrackWidget */ = {
 			isa = PBXGroup;
 			children = (
+				3E422750F202E764DA574862 /* Assets.xcassets */,
 				FF8AAC626AE3BC539CA3A398 /* Info.plist */,
 				9E0FC6146CB80BF3AD1557F6 /* NutriTrackWidget.entitlements */,
 				B96422D85ABCD655F9D0E13F /* NutriTrackWidget.swift */,
@@ -298,10 +323,12 @@
 			buildPhases = (
 				BA5023080AB640108CDE0596 /* Sources */,
 				4AA4EF9F38F58C563DE58233 /* Resources */,
+				8B2CAD8C0D9056394B9D11B1 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				AA763AB60BFAF7F82469EF55 /* PBXTargetDependency */,
 			);
 			name = NutriTrack;
 			packageProductDependencies = (
@@ -400,6 +427,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D5832F8982A1707CF3DE445 /* Assets.xcassets in Resources */,
 				E54D0F33475EB76E9099640D /* WIDGET_TODO.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -470,13 +498,18 @@
 			target = 27575F54DF6F732B0E40918B /* NutriTrack */;
 			targetProxy = A288108979970C2F0C595BC0 /* PBXContainerItemProxy */;
 		};
+		AA763AB60BFAF7F82469EF55 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EAE84E528D30446C47E780DB /* NutriTrackWidget */;
+			targetProxy = 45972C4F6CF006254AE66331 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		05E950BDD0CC517254C9C3A7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				APP_GROUP_IDENTIFIER = group.com.nutritrack;
+				APP_GROUP_IDENTIFIER = group.com.fredericbahnson.nutritrack;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = NutriTrack/NutriTrack.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -516,7 +549,7 @@
 		51528BF8CAB9E205AD18AA41 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				APP_GROUP_IDENTIFIER = group.com.nutritrack;
+				APP_GROUP_IDENTIFIER = group.com.fredericbahnson.nutritrack;
 				CODE_SIGN_ENTITLEMENTS = NutriTrackWidget/NutriTrackWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JGVUZQUHA8;
@@ -537,7 +570,7 @@
 		7496E959F49777EF8C6EC296 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				APP_GROUP_IDENTIFIER = group.com.nutritrack;
+				APP_GROUP_IDENTIFIER = group.com.fredericbahnson.nutritrack;
 				CODE_SIGN_ENTITLEMENTS = NutriTrackWidget/NutriTrackWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JGVUZQUHA8;
@@ -639,7 +672,7 @@
 		D1EB206246127EA19313C8DD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				APP_GROUP_IDENTIFIER = group.com.nutritrack;
+				APP_GROUP_IDENTIFIER = group.com.fredericbahnson.nutritrack;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = NutriTrack/NutriTrack.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";

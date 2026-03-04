@@ -1,69 +1,60 @@
 import WidgetKit
 import SwiftUI
 
-// MARK: - Stub Provider
+// MARK: - Timeline Entry
 
-struct Provider: TimelineProvider {
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date())
+struct NutriTrackEntry: TimelineEntry {
+    let date: Date
+}
+
+// MARK: - Timeline Provider
+
+struct NutriTrackProvider: TimelineProvider {
+    func placeholder(in context: Context) -> NutriTrackEntry {
+        NutriTrackEntry(date: Date())
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> Void) {
-        completion(SimpleEntry(date: Date()))
+    func getSnapshot(in context: Context, completion: @escaping (NutriTrackEntry) -> Void) {
+        completion(NutriTrackEntry(date: Date()))
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<SimpleEntry>) -> Void) {
-        let entry = SimpleEntry(date: Date())
+    func getTimeline(in context: Context, completion: @escaping (Timeline<NutriTrackEntry>) -> Void) {
+        // Static widget — never needs refreshing
+        let entry = NutriTrackEntry(date: Date())
         let timeline = Timeline(entries: [entry], policy: .never)
         completion(timeline)
     }
 }
 
-// MARK: - Entry
+// MARK: - Widget View
 
-struct SimpleEntry: TimelineEntry {
-    let date: Date
-}
-
-// MARK: - EntryView
-
-struct NutriTrackWidgetEntryView: View {
-    var entry: Provider.Entry
+struct NutriTrackWidgetView: View {
+    var entry: NutriTrackEntry
 
     var body: some View {
-        VStack(spacing: 4) {
-            Image(systemName: "chart.pie.fill")
-                .font(.system(size: 28))
-                .foregroundStyle(.secondary)
-            Text("Widget coming soon")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
+        ZStack {
+            AccessoryWidgetBackground()
+            Image(systemName: "drop")
+                .font(.system(size: 28, weight: .light))
+                .widgetAccentable()
         }
-        .containerBackground(.background, for: .widget)
+        .widgetURL(URL(string: "nutritrack://")!)
+        .containerBackground(.clear, for: .widget)
     }
 }
 
-// MARK: - Widget declaration
+// MARK: - Widget Configuration
 
 @main
 struct NutriTrackWidget: Widget {
-    let kind: String = "NutriTrackWidget"
+    let kind: String = "NutriTrackLockScreenWidget"
 
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: Provider()) { entry in
-            NutriTrackWidgetEntryView(entry: entry)
+        StaticConfiguration(kind: kind, provider: NutriTrackProvider()) { entry in
+            NutriTrackWidgetView(entry: entry)
         }
         .configurationDisplayName("NutriTrack")
-        .description("Track your daily nutrition goals.")
-        .supportedFamilies([.systemSmall, .systemMedium])
+        .description("Open NutriTrack from your lock screen.")
+        .supportedFamilies([.accessoryCircular])
     }
-}
-
-// MARK: - Preview
-
-#Preview(as: .systemSmall) {
-    NutriTrackWidget()
-} timeline: {
-    SimpleEntry(date: Date())
 }

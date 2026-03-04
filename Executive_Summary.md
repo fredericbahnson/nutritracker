@@ -219,7 +219,7 @@ Built-in defaults: Shake (25g), Chicken (30g), Egg (6g) for protein; Glass (8 fl
 
 ### 4.3 LogEntry (Core Data)
 
-The only entity in the Core Data schema. Stored in the App Group container (`group.com.nutritrack`) so a future widget can read it.
+The only entity in the Core Data schema. Stored in the App Group container (`group.com.fredericbahnson.nutritrack`) so a future widget can read it.
 
 | Attribute | Type | Notes |
 |---|---|---|
@@ -629,7 +629,7 @@ xcodebuild test -scheme NutriTrack \
 ## 12. Widget Stub
 
 `NutriTrackWidget` is a WidgetKit app extension target. Currently a stub showing "Widget coming soon" with no real data. Already configured:
-- App Group entitlement `group.com.nutritrack` on both app and widget targets.
+- App Group entitlement `group.com.fredericbahnson.nutritrack` on both app and widget targets.
 - Core Data store in App Group container (widget can read it when implemented).
 
 See `NutriTrackWidget/WIDGET_TODO.md` for the 6-step implementation plan:
@@ -638,7 +638,7 @@ See `NutriTrackWidget/WIDGET_TODO.md` for the 6-step implementation plan:
 3. Implement `Provider` fetching today's totals + active trackers.
 4. Build `EntryView` with mini wheel graphics (small + medium families).
 5. Add deep-link URL scheme `nutritrack://tracker/<trackerID>`.
-6. Migrate `@AppStorage` to `UserDefaults(suiteName: "group.com.nutritrack")` so widget can read settings.
+6. Migrate `@AppStorage` to `UserDefaults(suiteName: "group.com.fredericbahnson.nutritrack")` so widget can read settings.
 
 ---
 
@@ -650,9 +650,9 @@ Three targets:
 
 | Target | Type | Notes |
 |---|---|---|
-| `NutriTrack` | application | iOS 17.0, App Group `group.com.nutritrack` |
+| `NutriTrack` | application | iOS 17.0, App Group `group.com.fredericbahnson.nutritrack` |
 | `NutriTrackTests` | unit-test bundle | Linked to NutriTrack target |
-| `NutriTrackWidget` | app-extension | WidgetKit, App Group `group.com.nutritrack` |
+| `NutriTrackWidget` | app-extension | WidgetKit, App Group `group.com.fredericbahnson.nutritrack` |
 
 Swift settings: `SWIFT_VERSION = 5.9`, strict concurrency checking enabled.
 

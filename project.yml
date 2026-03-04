@@ -33,7 +33,7 @@ targets:
         CODE_SIGN_STYLE: Automatic
         DEVELOPMENT_TEAM: JGVUZQUHA8
         SWIFT_STRICT_CONCURRENCY: complete
-        APP_GROUP_IDENTIFIER: group.com.nutritrack
+        APP_GROUP_IDENTIFIER: group.com.fredericbahnson.nutritrack
       configs:
         Debug:
           DEBUG_INFORMATION_FORMAT: dwarf
@@ -41,7 +41,10 @@ targets:
       path: NutriTrack/NutriTrack.entitlements
       properties:
         com.apple.security.application-groups:
-          - group.com.nutritrack
+          - group.com.fredericbahnson.nutritrack
+    dependencies:
+      - target: NutriTrackWidget
+        embed: true
 
   NutriTrackWidget:
     type: app-extension
@@ -56,12 +59,12 @@ targets:
         CODE_SIGN_STYLE: Automatic
         DEVELOPMENT_TEAM: JGVUZQUHA8
         SKIP_INSTALL: YES
-        APP_GROUP_IDENTIFIER: group.com.nutritrack
+        APP_GROUP_IDENTIFIER: group.com.fredericbahnson.nutritrack
     entitlements:
       path: NutriTrackWidget/NutriTrackWidget.entitlements
       properties:
         com.apple.security.application-groups:
-          - group.com.nutritrack
+          - group.com.fredericbahnson.nutritrack
     dependencies:
       - sdk: WidgetKit.framework
       - sdk: SwiftUI.framework

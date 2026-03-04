@@ -22,6 +22,9 @@ struct NutriTrackApp: App {
                 .onAppear {
                     todayVM.fetchTodayEntries()
                 }
+                .onOpenURL { _ in
+                    // nutritrack:// received — app is already at MainScreen, nothing to do
+                }
         }
     }
 
