@@ -188,4 +188,68 @@ final class NutriTrackTests: XCTestCase {
         let preset = QuickAddPreset(trackerID: "protein", amount: 30, label: "")
         XCTAssertEqual(preset.displayText(unit: "g"), "30g")
     }
+
+    // MARK: - Icon and labelColor Codable
+
+    func testTrackerTypeIconCodableRoundTrip() throws {
+        var tracker = TrackerType.defaults[0]
+        tracker.iconName = "dna"
+        tracker.labelColor = "#FF0000"
+
+        let data = try JSONEncoder().encode(tracker)
+        let decoded = try JSONDecoder().decode(TrackerType.self, from: data)
+
+        XCTAssertEqual(decoded.iconName, "dna")
+        XCTAssertEqual(decoded.labelColor, "#FF0000")
+    }
+
+    func testTrackerTypeIconCodableBackwardCompat() throws {
+        // Simulate old JSON that doesn't contain iconName or labelColor
+        let oldJSON = """
+        {
+          "id": "protein",
+          "displayName": "Protein",
+          "unit": "g",
+          "isBuiltIn": true,
+          "minimumGoal": 120,
+          "mainGoal": 160,
+          "displayOrder": 0,
+          "isEnabled": true,
+          "pieColor": "#E8601C",
+          "ringColor": "#F4A261",
+          "barColor": "#E76F51"
+        }
+        """.data(using: .utf8)!
+
+        let decoded = try JSONDecoder().decode(TrackerType.self, from: oldJSON)
+        XCTAssertNil(decoded.iconName)
+        XCTAssertEqual(decoded.labelColor, "#FFFFFF")
+    }
+
+    // MARK: - TrackerIconLibrary
+
+    func testTrackerIconLibraryContainsExpectedIcons() {
+        XCTAssertEqual(TrackerIconLibrary.all.count, 16)
+
+        let categories = Set(TrackerIconLibrary.all.map { $0.category })
+        XCTAssertTrue(categories.contains("Nutrition"))
+        XCTAssertTrue(categories.contains("Activity"))
+        XCTAssertTrue(categories.contains("Wellness"))
+        XCTAssertTrue(categories.contains("General"))
+    }
+
+    func testWheatIconIsMarkedAsCustomPath() {
+        let wheatIcon = TrackerIconLibrary.all.first { $0.id == "custom.wheat" }
+        XCTAssertNotNil(wheatIcon)
+        XCTAssertTrue(wheatIcon?.isCustomPath == true)
+    }
+
+    // MARK: - formatStatText
+
+    func testStatTextFormatsCorrectly() {
+        XCTAssertEqual(TrackerWheelView.formatStatText(logged: 95,    goal: 160,   unit: "g"),  "95/160 g")
+        XCTAssertEqual(TrackerWheelView.formatStatText(logged: 12.5,  goal: 25.0,  unit: "g"),  "12.5/25 g")
+        XCTAssertEqual(TrackerWheelView.formatStatText(logged: 0,     goal: 120,   unit: "oz"), "0/120 oz")
+        XCTAssertEqual(TrackerWheelView.formatStatText(logged: 100.5, goal: 200.5, unit: "ml"), "100.5/200.5 ml")
+    }
 }

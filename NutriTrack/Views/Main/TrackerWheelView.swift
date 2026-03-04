@@ -17,9 +17,10 @@ struct TrackerWheelView: View {
     private var ringInner: CGFloat  { size * 0.375 }           // ring thickness = 0.1 × size
     private var pieRadius: CGFloat  { ringInner - 2 }          // 2-pt gap between pie and ring
     private var barWidth: CGFloat   { size * 0.1 }             // matches ring thickness
-    private var barHeight: CGFloat { size }
-    private var barX: CGFloat { ringOuter + 8 }
+    private var barHeight: CGFloat  { size }
+    private var barX: CGFloat       { ringOuter + 8 }
     private var graphicWidth: CGFloat { 2 * ringOuter + 8 + barWidth }
+    private var iconSize: CGFloat   { pieRadius * 0.42 }
 
     // Fractions (animated)
     private var pieFraction: Double {
@@ -32,18 +33,47 @@ struct TrackerWheelView: View {
         tracker.overflowFraction(for: animatedTotal)
     }
 
-    private var percentDisplay: String {
-        let pct = tracker.mainGoal > 0
-            ? min(animatedTotal / tracker.mainGoal * 100, 200)
-            : 0
-        return String(format: "%.0f%%", pct)
+    // MARK: - Stat text
+
+    private var statText: String {
+        TrackerWheelView.formatStatText(
+            logged: animatedTotal,
+            goal: tracker.mainGoal,
+            unit: tracker.shortUnit
+        )
     }
 
-    private var amountDisplay: String {
-        if animatedTotal.truncatingRemainder(dividingBy: 1) == 0 {
-            return String(Int(animatedTotal))
+    static func formatStatText(logged: Double, goal: Double, unit: String) -> String {
+        let fmt: (Double) -> String = { v in
+            v.truncatingRemainder(dividingBy: 1) == 0
+                ? String(Int(v)) : String(format: "%.1f", v)
         }
-        return String(format: "%.1f", animatedTotal)
+        return "\(fmt(logged))/\(fmt(goal)) \(unit)"
+    }
+
+    // MARK: - Center content
+
+    @ViewBuilder
+    private var wheelCenterContent: some View {
+        VStack(spacing: 4) {
+            if tracker.usesIcon,
+               let name = tracker.iconName,
+               let icon = TrackerIconLibrary.all.first(where: { $0.id == name }) {
+                TrackerIconLibrary.iconView(for: icon, size: iconSize,
+                                            color: Color(hex: tracker.labelColor))
+            } else {
+                Text(tracker.displayName)
+                    .font(Typography.label)
+                    .fontWeight(.light)
+                    .foregroundStyle(Color(hex: tracker.labelColor))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
+            }
+            Text(statText)
+                .font(Typography.smallNumber)
+                .foregroundStyle(Color(hex: tracker.labelColor))
+        }
+        .frame(width: 2 * ringOuter, height: size)
     }
 
     var body: some View {
@@ -105,22 +135,8 @@ struct TrackerWheelView: View {
             }
             .frame(width: graphicWidth, height: size)
 
-            // Center label — constrained to ring diameter, centered on ring
-            VStack(spacing: 2) {
-                Text(amountDisplay)
-                    .font(size > 80 ? Typography.largeNumber : Typography.mediumNumber)
-                    .foregroundStyle(Color(.label))
-                    .contentTransition(.numericText())
-
-                Text("\(tracker.unit) · \(percentDisplay)")
-                    .font(Typography.caption)
-                    .foregroundStyle(Color(.secondaryLabel))
-
-                Text(tracker.displayName)
-                    .font(Typography.caption)
-                    .foregroundStyle(Color(.tertiaryLabel))
-            }
-            .frame(width: 2 * ringOuter, height: size)
+            // Center content — icon or name + stat line
+            wheelCenterContent
         }
         .contentShape(Rectangle())
         .onTapGesture { onTap?() }
@@ -146,7 +162,10 @@ struct TrackerWheelView: View {
         let pct = tracker.mainGoal > 0
             ? Int(min(dailyTotal / tracker.mainGoal * 100, 200))
             : 0
-        return "\(amountDisplay) \(tracker.unit), \(pct) percent of main goal"
+        let amt = dailyTotal.truncatingRemainder(dividingBy: 1) == 0
+            ? String(Int(dailyTotal))
+            : String(format: "%.1f", dailyTotal)
+        return "\(amt) \(tracker.unit), \(pct) percent of main goal"
     }
 
     // MARK: - Drawing helpers

@@ -82,11 +82,24 @@ final class SettingsViewModel: ObservableObject {
         saveTrackers()
     }
 
+    func updateIcon(for trackerID: String, iconName: String?) {
+        guard let idx = trackers.firstIndex(where: { $0.id == trackerID }) else { return }
+        trackers[idx].iconName = iconName
+        saveTrackers()
+    }
+
+    func updateLabelColor(for trackerID: String, labelColor: String) {
+        guard let idx = trackers.firstIndex(where: { $0.id == trackerID }) else { return }
+        trackers[idx].labelColor = labelColor
+        saveTrackers()
+    }
+
     func addCustomTracker(
         name: String,
         unit: String,
         minGoal: Double,
-        mainGoal: Double
+        mainGoal: Double,
+        iconName: String? = nil
     ) {
         let newID = name.lowercased().replacingOccurrences(of: " ", with: "_")
         let newOrder = (trackers.map(\.displayOrder).max() ?? -1) + 1
@@ -101,7 +114,9 @@ final class SettingsViewModel: ObservableObject {
             isEnabled: true,
             pieColor: "#8E44AD",
             ringColor: "#BB8FCE",
-            barColor: "#6C3483"
+            barColor: "#6C3483",
+            iconName: iconName,
+            labelColor: "#FFFFFF"
         )
         trackers.append(tracker)
         saveTrackers()

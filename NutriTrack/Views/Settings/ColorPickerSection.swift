@@ -11,12 +11,14 @@ struct ColorPickerSection: View {
     @State private var pieColor: Color
     @State private var ringColor: Color
     @State private var barColor: Color
+    @State private var labelColor: Color
 
     init(tracker: TrackerType) {
         self.tracker = tracker
-        _pieColor = State(initialValue: Color(hex: tracker.pieColor))
-        _ringColor = State(initialValue: Color(hex: tracker.ringColor))
-        _barColor = State(initialValue: Color(hex: tracker.barColor))
+        _pieColor   = State(initialValue: Color(hex: tracker.pieColor))
+        _ringColor  = State(initialValue: Color(hex: tracker.ringColor))
+        _barColor   = State(initialValue: Color(hex: tracker.barColor))
+        _labelColor = State(initialValue: Color(hex: tracker.labelColor))
     }
 
     var body: some View {
@@ -35,6 +37,11 @@ struct ColorPickerSection: View {
                 Label("Bar", systemImage: "rectangle.fill")
             }
             .onChange(of: barColor) { _, _ in save() }
+
+            ColorPicker(selection: $labelColor, supportsOpacity: false) {
+                Label("Label & Icon Color", systemImage: "textformat")
+            }
+            .onChange(of: labelColor) { _, _ in save() }
         }
     }
 
@@ -45,6 +52,7 @@ struct ColorPickerSection: View {
             ring: ringColor.toHex(),
             bar: barColor.toHex()
         )
+        settingsVM.updateLabelColor(for: tracker.id, labelColor: labelColor.toHex())
     }
 }
 

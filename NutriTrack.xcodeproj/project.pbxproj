@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 63;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -25,6 +25,7 @@
 		72AAFD6F3981E03DAB646B5A /* EntryAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C255307FCB19287E973A19 /* EntryAreaView.swift */; };
 		7A404A0B9B5D94FF22688969 /* ColorPickerSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9382AFFBEA08D0D722B67A80 /* ColorPickerSection.swift */; };
 		7ABC1A71A41A44E54E5681CC /* HeatmapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E51EFF32A19F792B0BEF28A /* HeatmapView.swift */; };
+		83CBAFAFA4E58B9444A37E5E /* TrackerIconLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52298FE951DF530BD778F6F4 /* TrackerIconLibrary.swift */; };
 		8ABDC09E30B8C04D87E2425D /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EA0A4AE918933D6592032F4 /* WidgetKit.framework */; };
 		8DC40D2DA1A9FAC0F0484834 /* QuickAddPreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5085BD966E7A2CF29C43CFD6 /* QuickAddPreset.swift */; };
 		95B23F365DF460C28DBCF570 /* NutriTrackWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96422D85ABCD655F9D0E13F /* NutriTrackWidget.swift */; };
@@ -36,6 +37,7 @@
 		A9BB661E3D79236E96A9E041 /* HistoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0EED399AE47FBC3BBA0840 /* HistoryScreen.swift */; };
 		AC3AA2731968167AD7AE22F4 /* NutriTrackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C49BDFFE4A5A6BD1C3079C /* NutriTrackTests.swift */; };
 		B0EE6859EB2C900CEA871221 /* QuickAddPresetRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E33113708643D9C05142A1 /* QuickAddPresetRow.swift */; };
+		B3DB09F9085879D2CD064207 /* IconPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937268D58B98DD305B74847D /* IconPickerView.swift */; };
 		CD73E26F3FE21FEB48F51E52 /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C220B8993A441B3A9EA6B0 /* Typography.swift */; };
 		D779B7416D1F831476D6B407 /* LogEntry+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E796DFD67017F7295A6D97DA /* LogEntry+Extensions.swift */; };
 		E12AF8FE746CA4B6C057B055 /* DateHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394F89169FBA9A72E00BB3EC /* DateHelpers.swift */; };
@@ -62,9 +64,10 @@
 		36AA6C576C2A54D3C30535B6 /* WeeklyHeatmapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyHeatmapView.swift; sourceTree = "<group>"; };
 		394F89169FBA9A72E00BB3EC /* DateHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelpers.swift; sourceTree = "<group>"; };
 		39C49BDFFE4A5A6BD1C3079C /* NutriTrackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutriTrackTests.swift; sourceTree = "<group>"; };
-		3A2C6C6948705C4715113C1E /* NutriTrackWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NutriTrackWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A2C6C6948705C4715113C1E /* NutriTrackWidget.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = NutriTrackWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EE863B431F73081BA063333 /* NutriTrackApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutriTrackApp.swift; sourceTree = "<group>"; };
 		5085BD966E7A2CF29C43CFD6 /* QuickAddPreset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickAddPreset.swift; sourceTree = "<group>"; };
+		52298FE951DF530BD778F6F4 /* TrackerIconLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerIconLibrary.swift; sourceTree = "<group>"; };
 		556989F3DD271CCC1677CC51 /* TodayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewModel.swift; sourceTree = "<group>"; };
 		5B40CAA26B28730275374883 /* TrackerGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerGridView.swift; sourceTree = "<group>"; };
 		5E04AA17E3D08505F417527D /* TrackerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerType.swift; sourceTree = "<group>"; };
@@ -82,6 +85,7 @@
 		8C8CDCCFF7EB62651D85FF9E /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		8DB77E3590690886F0351A4E /* HistoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListView.swift; sourceTree = "<group>"; };
 		8E51EFF32A19F792B0BEF28A /* HeatmapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeatmapView.swift; sourceTree = "<group>"; };
+		937268D58B98DD305B74847D /* IconPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconPickerView.swift; sourceTree = "<group>"; };
 		9382AFFBEA08D0D722B67A80 /* ColorPickerSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerSection.swift; sourceTree = "<group>"; };
 		97E33113708643D9C05142A1 /* QuickAddPresetRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickAddPresetRow.swift; sourceTree = "<group>"; };
 		99A452BD395D7CDEA5C6DEBD /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
@@ -91,9 +95,9 @@
 		AB737218B37521EB58A97066 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		B96422D85ABCD655F9D0E13F /* NutriTrackWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutriTrackWidget.swift; sourceTree = "<group>"; };
 		C2A4031AA28729FC1E2AEE5D /* WIDGET_TODO.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = WIDGET_TODO.md; sourceTree = "<group>"; };
-		DE21B629844DD1573E3263D4 /* NutriTrackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NutriTrackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DE21B629844DD1573E3263D4 /* NutriTrackTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = NutriTrackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E796DFD67017F7295A6D97DA /* LogEntry+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LogEntry+Extensions.swift"; sourceTree = "<group>"; };
-		ECED86A7746185929A2FF75F /* NutriTrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NutriTrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		ECED86A7746185929A2FF75F /* NutriTrack.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = NutriTrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE0EED399AE47FBC3BBA0840 /* HistoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryScreen.swift; sourceTree = "<group>"; };
 		F3C255307FCB19287E973A19 /* EntryAreaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryAreaView.swift; sourceTree = "<group>"; };
 		FF8AAC626AE3BC539CA3A398 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -137,6 +141,7 @@
 				E796DFD67017F7295A6D97DA /* LogEntry+Extensions.swift */,
 				AEF5BDDBAC471CE99ACCF0C2 /* NutriTrack.xcdatamodeld */,
 				5085BD966E7A2CF29C43CFD6 /* QuickAddPreset.swift */,
+				52298FE951DF530BD778F6F4 /* TrackerIconLibrary.swift */,
 				5E04AA17E3D08505F417527D /* TrackerType.swift */,
 			);
 			path = Models;
@@ -264,6 +269,7 @@
 			isa = PBXGroup;
 			children = (
 				9382AFFBEA08D0D722B67A80 /* ColorPickerSection.swift */,
+				937268D58B98DD305B74847D /* IconPickerView.swift */,
 				67BE2C376CF6B67DD7BDC5E3 /* PresetsEditorView.swift */,
 				99A452BD395D7CDEA5C6DEBD /* SettingsScreen.swift */,
 				7616A8D4E85C4167F0ED0055 /* TrackerConfigView.swift */,
@@ -345,12 +351,14 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 2620;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					27575F54DF6F732B0E40918B = {
+						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
 					EAE84E528D30446C47E780DB = {
+						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -365,6 +373,7 @@
 			);
 			mainGroup = 00B049707C24FFF4D46E9DDE;
 			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -407,6 +416,7 @@
 				451C529F40A7436A2F61A219 /* HistoryListView.swift in Sources */,
 				A9BB661E3D79236E96A9E041 /* HistoryScreen.swift in Sources */,
 				12BF48A72C4CE6C67E6B906A /* HistoryViewModel.swift in Sources */,
+				B3DB09F9085879D2CD064207 /* IconPickerView.swift in Sources */,
 				D779B7416D1F831476D6B407 /* LogEntry+Extensions.swift in Sources */,
 				145335C42235F4D6F92FDFDF /* MainScreen.swift in Sources */,
 				EEC81C98145236D90F5372AB /* MonthlyHeatmapView.swift in Sources */,
@@ -423,6 +433,7 @@
 				17A224800377C30975925A91 /* TodayViewModel.swift in Sources */,
 				5ADDFBF9BD9524CD93F04F3D /* TrackerConfigView.swift in Sources */,
 				F3894A8E5856C65A40A420C5 /* TrackerGridView.swift in Sources */,
+				83CBAFAFA4E58B9444A37E5E /* TrackerIconLibrary.swift in Sources */,
 				96503FF88BD49E937F1D9A76 /* TrackerType.swift in Sources */,
 				06EA56E90B2E35F477767BAA /* TrackerWheelView.swift in Sources */,
 				CD73E26F3FE21FEB48F51E52 /* Typography.swift in Sources */,
@@ -467,14 +478,14 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = JGVUZQUHA8;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = NutriTrack/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.fredericbahnson.nutritrack;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nutritrack.app;
 				SDKROOT = iphoneos;
 				SWIFT_STRICT_CONCURRENCY = complete;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -485,7 +496,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = JGVUZQUHA8;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -505,7 +515,7 @@
 				APP_GROUP_IDENTIFIER = group.com.nutritrack;
 				CODE_SIGN_ENTITLEMENTS = NutriTrackWidget/NutriTrackWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = JGVUZQUHA8;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = NutriTrackWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -513,7 +523,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.fredericbahnson.nutritrack;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nutritrack.app.widget;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -526,7 +536,7 @@
 				APP_GROUP_IDENTIFIER = group.com.nutritrack;
 				CODE_SIGN_ENTITLEMENTS = NutriTrackWidget/NutriTrackWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = JGVUZQUHA8;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = NutriTrackWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -534,7 +544,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.fredericbahnson.nutritrack;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nutritrack.app.widget;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -545,7 +555,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = JGVUZQUHA8;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -597,7 +606,6 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -618,7 +626,6 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.9;
@@ -633,14 +640,14 @@
 				CODE_SIGN_ENTITLEMENTS = NutriTrack/NutriTrack.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = JGVUZQUHA8;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = NutriTrack/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.fredericbahnson.nutritrack;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nutritrack.app;
 				SDKROOT = iphoneos;
 				SWIFT_STRICT_CONCURRENCY = complete;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -685,7 +692,6 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -699,7 +705,6 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.9;
