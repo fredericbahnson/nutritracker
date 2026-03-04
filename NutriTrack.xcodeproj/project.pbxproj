@@ -19,6 +19,7 @@
 		32EFF6C3022D52E7FCA2E2F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00EC0B1E47F4EEAA5E984803 /* Assets.xcassets */; };
 		451C529F40A7436A2F61A219 /* HistoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB77E3590690886F0351A4E /* HistoryListView.swift */; };
 		5ADDFBF9BD9524CD93F04F3D /* TrackerConfigView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7616A8D4E85C4167F0ED0055 /* TrackerConfigView.swift */; };
+		5E381541652B567FE4EF95CD /* BarGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EFC4BD5E8C9EF2D69BD5F8 /* BarGraphView.swift */; };
 		63E88652AD2FEC4F148EBC98 /* TodayLogSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E6183B5B1E2B297280E0A2 /* TodayLogSheet.swift */; };
 		64A07FD294E8027C8428299A /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8CDCCFF7EB62651D85FF9E /* CoreDataStack.swift */; };
 		6C8FE3C7EF2BFEDD76C4541A /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A452BD395D7CDEA5C6DEBD /* SettingsScreen.swift */; };
@@ -60,6 +61,7 @@
 		00EC0B1E47F4EEAA5E984803 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		03E6183B5B1E2B297280E0A2 /* TodayLogSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayLogSheet.swift; sourceTree = "<group>"; };
 		0EE1389E19AAF23DC4EE7DDE /* MainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
+		22EFC4BD5E8C9EF2D69BD5F8 /* BarGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarGraphView.swift; sourceTree = "<group>"; };
 		2E356D4B7DE4C3EB21680440 /* MonthlyHeatmapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyHeatmapView.swift; sourceTree = "<group>"; };
 		36AA6C576C2A54D3C30535B6 /* WeeklyHeatmapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyHeatmapView.swift; sourceTree = "<group>"; };
 		394F89169FBA9A72E00BB3EC /* DateHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelpers.swift; sourceTree = "<group>"; };
@@ -256,6 +258,7 @@
 		DAA02D0C576E8E3C99A74566 /* History */ = {
 			isa = PBXGroup;
 			children = (
+				22EFC4BD5E8C9EF2D69BD5F8 /* BarGraphView.swift */,
 				8E51EFF32A19F792B0BEF28A /* HeatmapView.swift */,
 				8DB77E3590690886F0351A4E /* HistoryListView.swift */,
 				EE0EED399AE47FBC3BBA0840 /* HistoryScreen.swift */,
@@ -354,11 +357,11 @@
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					27575F54DF6F732B0E40918B = {
-						DevelopmentTeam = U2B69W9B2U;
+						DevelopmentTeam = JGVUZQUHA8;
 						ProvisioningStyle = Automatic;
 					};
 					EAE84E528D30446C47E780DB = {
-						DevelopmentTeam = U2B69W9B2U;
+						DevelopmentTeam = JGVUZQUHA8;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -408,6 +411,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E381541652B567FE4EF95CD /* BarGraphView.swift in Sources */,
 				7A404A0B9B5D94FF22688969 /* ColorPickerSection.swift in Sources */,
 				64A07FD294E8027C8428299A /* CoreDataStack.swift in Sources */,
 				E12AF8FE746CA4B6C057B055 /* DateHelpers.swift in Sources */,
@@ -478,14 +482,14 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = U2B69W9B2U;
+				DEVELOPMENT_TEAM = JGVUZQUHA8;
 				INFOPLIST_FILE = NutriTrack/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.nutritrack.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fredericbahnson.nutritrack;
 				SDKROOT = iphoneos;
 				SWIFT_STRICT_CONCURRENCY = complete;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -502,7 +506,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.nutritrack.app.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fredericbahnson.nutritrack.tests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NutriTrack.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/NutriTrack";
@@ -515,7 +519,7 @@
 				APP_GROUP_IDENTIFIER = group.com.nutritrack;
 				CODE_SIGN_ENTITLEMENTS = NutriTrackWidget/NutriTrackWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = U2B69W9B2U;
+				DEVELOPMENT_TEAM = JGVUZQUHA8;
 				INFOPLIST_FILE = NutriTrackWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -523,7 +527,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.nutritrack.app.widget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fredericbahnson.nutritrack.widget;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -536,7 +540,7 @@
 				APP_GROUP_IDENTIFIER = group.com.nutritrack;
 				CODE_SIGN_ENTITLEMENTS = NutriTrackWidget/NutriTrackWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = U2B69W9B2U;
+				DEVELOPMENT_TEAM = JGVUZQUHA8;
 				INFOPLIST_FILE = NutriTrackWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -544,7 +548,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.nutritrack.app.widget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fredericbahnson.nutritrack.widget;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -561,7 +565,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.nutritrack.app.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fredericbahnson.nutritrack.tests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NutriTrack.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/NutriTrack";
@@ -640,14 +644,14 @@
 				CODE_SIGN_ENTITLEMENTS = NutriTrack/NutriTrack.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = U2B69W9B2U;
+				DEVELOPMENT_TEAM = JGVUZQUHA8;
 				INFOPLIST_FILE = NutriTrack/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.nutritrack.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fredericbahnson.nutritrack;
 				SDKROOT = iphoneos;
 				SWIFT_STRICT_CONCURRENCY = complete;
 				TARGETED_DEVICE_FAMILY = "1,2";
