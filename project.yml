@@ -31,7 +31,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.nutritrack.app
         INFOPLIST_FILE: NutriTrack/Info.plist
         CODE_SIGN_STYLE: Automatic
-        DEVELOPMENT_TEAM: ""
+        DEVELOPMENT_TEAM: U2B69W9B2U
         SWIFT_STRICT_CONCURRENCY: complete
         APP_GROUP_IDENTIFIER: group.com.nutritrack
       configs:
@@ -54,7 +54,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.nutritrack.app.widget
         INFOPLIST_FILE: NutriTrackWidget/Info.plist
         CODE_SIGN_STYLE: Automatic
-        DEVELOPMENT_TEAM: ""
+        DEVELOPMENT_TEAM: U2B69W9B2U
         SKIP_INSTALL: YES
         APP_GROUP_IDENTIFIER: group.com.nutritrack
     entitlements:

@@ -354,11 +354,11 @@
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					27575F54DF6F732B0E40918B = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = U2B69W9B2U;
 						ProvisioningStyle = Automatic;
 					};
 					EAE84E528D30446C47E780DB = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = U2B69W9B2U;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -478,7 +478,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = U2B69W9B2U;
 				INFOPLIST_FILE = NutriTrack/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -515,7 +515,7 @@
 				APP_GROUP_IDENTIFIER = group.com.nutritrack;
 				CODE_SIGN_ENTITLEMENTS = NutriTrackWidget/NutriTrackWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = U2B69W9B2U;
 				INFOPLIST_FILE = NutriTrackWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -536,7 +536,7 @@
 				APP_GROUP_IDENTIFIER = group.com.nutritrack;
 				CODE_SIGN_ENTITLEMENTS = NutriTrackWidget/NutriTrackWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = U2B69W9B2U;
 				INFOPLIST_FILE = NutriTrackWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -640,7 +640,7 @@
 				CODE_SIGN_ENTITLEMENTS = NutriTrack/NutriTrack.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = U2B69W9B2U;
 				INFOPLIST_FILE = NutriTrack/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
