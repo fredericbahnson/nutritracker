@@ -12,10 +12,16 @@ struct EntryAreaView: View {
     @EnvironmentObject private var settingsVM: SettingsViewModel
     @Environment(\.dismiss) private var dismiss
 
-    @State private var selectedTrackerID: String = ""
+    @State private var selectedTrackerID: String
     @State private var inputText: String = ""
     @State private var editingEntry: LogEntry? = nil
     @State private var editInput: String = ""
+
+    init(activeTrackers: [TrackerType], initialTrackerID: String? = nil) {
+        self.activeTrackers = activeTrackers
+        self.initialTrackerID = initialTrackerID
+        _selectedTrackerID = State(initialValue: initialTrackerID ?? activeTrackers.first?.id ?? "")
+    }
 
     private var selectedTracker: TrackerType? {
         activeTrackers.first { $0.id == selectedTrackerID }
@@ -60,12 +66,8 @@ struct EntryAreaView: View {
                 }
             }
             .padding(.horizontal, 16)
+            .padding(.top, 20)
             .padding(.bottom, 24)
-        }
-        .onAppear {
-            if selectedTrackerID.isEmpty {
-                selectedTrackerID = initialTrackerID ?? activeTrackers.first?.id ?? ""
-            }
         }
         .onChange(of: activeTrackers) { _, newTrackers in
             if !newTrackers.contains(where: { $0.id == selectedTrackerID }) {
