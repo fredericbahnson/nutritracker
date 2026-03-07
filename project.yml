@@ -82,3 +82,35 @@ targets:
         BUNDLE_LOADER: "$(TEST_HOST)"
     dependencies:
       - target: NutriTrack
+
+schemes:
+  NutriTrack:
+    build:
+      targets:
+        NutriTrack: all
+        NutriTrackWidget: [build]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - NutriTrackTests
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release
+
+  NutriTrackWidget:
+    build:
+      targets:
+        NutriTrackWidget: all
+    run:
+      config: Debug
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release
