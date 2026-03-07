@@ -132,6 +132,22 @@ final class SettingsViewModel: ObservableObject {
         saveTrackers()
     }
 
+    func resetColors(for trackerID: String) {
+        guard let idx = trackers.firstIndex(where: { $0.id == trackerID }) else { return }
+        if let def = TrackerType.defaults.first(where: { $0.id == trackerID }) {
+            trackers[idx].pieColor   = def.pieColor
+            trackers[idx].ringColor  = def.ringColor
+            trackers[idx].barColor   = def.barColor
+            trackers[idx].labelColor = def.labelColor
+        } else {
+            trackers[idx].pieColor   = "#8E44AD"
+            trackers[idx].ringColor  = "#BB8FCE"
+            trackers[idx].barColor   = "#6C3483"
+            trackers[idx].labelColor = "adaptive"
+        }
+        saveTrackers()
+    }
+
     func addCustomTracker(
         name: String,
         unit: String,

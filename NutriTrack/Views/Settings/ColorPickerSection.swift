@@ -24,7 +24,7 @@ struct ColorPickerSection: View {
     var body: some View {
         Section(header: Text("\(tracker.displayName) Colors")) {
             ColorPicker(selection: $pieColor, supportsOpacity: false) {
-                Label("Pie", systemImage: "circle.fill")
+                Label("Wheel", systemImage: "circle.fill")
             }
             .onChange(of: pieColor) { _, _ in save() }
 
@@ -42,6 +42,18 @@ struct ColorPickerSection: View {
                 Label("Label & Icon Color", systemImage: "textformat")
             }
             .onChange(of: labelColor) { _, _ in save() }
+
+            Button {
+                settingsVM.resetColors(for: tracker.id)
+                if let updated = settingsVM.tracker(for: tracker.id) {
+                    pieColor   = Color(hex: updated.pieColor)
+                    ringColor  = Color(hex: updated.ringColor)
+                    barColor   = Color(hex: updated.barColor)
+                    labelColor = updated.labelColor == "adaptive" ? .white : Color(hex: updated.labelColor)
+                }
+            } label: {
+                Label("Restore Defaults", systemImage: "arrow.uturn.backward")
+            }
         }
     }
 
