@@ -44,6 +44,17 @@ final class SettingsViewModel: ObservableObject {
             migrationVersion = 1
         }
 
+        // Migrate built-in tracker label color to adaptive (runs once)
+        if migrationVersion < 2 {
+            for idx in trackers.indices where trackers[idx].isBuiltIn {
+                if trackers[idx].labelColor == "#FFFFFF" {
+                    trackers[idx].labelColor = "adaptive"
+                }
+            }
+            saveTrackers()
+            migrationVersion = 2
+        }
+
         // Update water unit display on trackers
         updateWaterUnitDisplay()
     }

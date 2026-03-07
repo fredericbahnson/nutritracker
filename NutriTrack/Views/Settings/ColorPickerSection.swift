@@ -18,7 +18,7 @@ struct ColorPickerSection: View {
         _pieColor   = State(initialValue: Color(hex: tracker.pieColor))
         _ringColor  = State(initialValue: Color(hex: tracker.ringColor))
         _barColor   = State(initialValue: Color(hex: tracker.barColor))
-        _labelColor = State(initialValue: Color(hex: tracker.labelColor))
+        _labelColor = State(initialValue: tracker.labelColor == "adaptive" ? .white : Color(hex: tracker.labelColor))
     }
 
     var body: some View {

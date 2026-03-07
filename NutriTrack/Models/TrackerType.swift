@@ -34,7 +34,7 @@ struct TrackerType: Identifiable, Hashable {
             ringColor: "#F4A261",
             barColor: "#E76F51",
             iconName: "custom.helix",
-            labelColor: "#FFFFFF"
+            labelColor: "adaptive"
         ),
         TrackerType(
             id: "water",
@@ -49,7 +49,7 @@ struct TrackerType: Identifiable, Hashable {
             ringColor: "#0096C7",
             barColor: "#023E8A",
             iconName: "drop",
-            labelColor: "#FFFFFF"
+            labelColor: "adaptive"
         )
     ]
 
@@ -112,7 +112,7 @@ extension TrackerType: Codable {
         ringColor    = try c.decode(String.self, forKey: .ringColor)
         barColor     = try c.decode(String.self, forKey: .barColor)
         iconName     = try c.decodeIfPresent(String.self, forKey: .iconName)
-        labelColor   = try c.decodeIfPresent(String.self, forKey: .labelColor) ?? "#FFFFFF"
+        labelColor   = try c.decodeIfPresent(String.self, forKey: .labelColor) ?? "adaptive"
     }
 
     func encode(to encoder: Encoder) throws {

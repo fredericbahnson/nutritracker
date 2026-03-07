@@ -9,6 +9,7 @@ struct TrackerWheelView: View {
     var onTap: (() -> Void)? = nil
 
     @EnvironmentObject private var themeColors: ThemeColors
+    @Environment(\.colorScheme) private var colorScheme
 
     // Animation trigger
     @State private var animatedTotal: Double = 0
@@ -21,6 +22,10 @@ struct TrackerWheelView: View {
     private var barX: CGFloat       { ringOuter + 8 }
     private var graphicWidth: CGFloat { 2 * ringOuter + 8 + barWidth }
     private var iconSize: CGFloat   { pieRadius * 0.42 }
+
+    private var effectiveLabelColor: Color {
+        tracker.labelColor == "adaptive" ? Color(.label) : effectiveLabelColor
+    }
 
     // Fractions (animated)
     private var pieFraction: Double {
@@ -60,18 +65,18 @@ struct TrackerWheelView: View {
                let name = tracker.iconName,
                let icon = TrackerIconLibrary.all.first(where: { $0.id == name }) {
                 TrackerIconLibrary.iconView(for: icon, size: iconSize,
-                                            color: Color(hex: tracker.labelColor))
+                                            color: effectiveLabelColor)
             } else {
                 Text(tracker.displayName)
                     .font(Typography.label)
                     .fontWeight(.light)
-                    .foregroundStyle(Color(hex: tracker.labelColor))
+                    .foregroundStyle(effectiveLabelColor)
                     .lineLimit(1)
                     .minimumScaleFactor(0.7)
             }
             Text(statText)
                 .font(Typography.smallNumber)
-                .foregroundStyle(Color(hex: tracker.labelColor))
+                .foregroundStyle(effectiveLabelColor)
         }
         .frame(width: 2 * ringOuter, height: size)
     }
