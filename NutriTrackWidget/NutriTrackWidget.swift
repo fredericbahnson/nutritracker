@@ -38,7 +38,7 @@ struct NutriTrackWidgetView: View {
                 .font(.system(size: 28, weight: .light))
                 .widgetAccentable()
         }
-        .widgetURL(URL(string: "nutritrack://")!)
+        .widgetURL(URL(string: "nutritrack://"))
         .containerBackground(.clear, for: .widget)
     }
 }

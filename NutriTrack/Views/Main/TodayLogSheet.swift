@@ -56,10 +56,8 @@ struct TodayLogSheet: View {
                         .accessibilityElement(children: .combine)
                     }
                     .onDelete { offsets in
-                        let sorted = entries
-                        for idx in offsets {
-                            todayVM.deleteEntry(sorted[idx])
-                        }
+                        let toDelete = offsets.map { entries[$0] }
+                        toDelete.forEach { todayVM.deleteEntry($0) }
                     }
                 }
                 .listStyle(.insetGrouped)

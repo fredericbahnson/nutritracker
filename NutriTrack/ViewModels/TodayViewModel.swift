@@ -8,6 +8,7 @@ import SwiftUI
 final class TodayViewModel: ObservableObject {
     @Published var dailyTotals: [String: Double] = [:]
     @Published var todayEntries: [String: [LogEntry]] = [:]
+    @Published var lastError: Error?
 
     private let stack: CoreDataStack
 
@@ -49,7 +50,7 @@ final class TodayViewModel: ObservableObject {
             dailyTotals = totals
             todayEntries = grouped
         } catch {
-            // Leave previous values intact on error
+            lastError = error
         }
     }
 
@@ -59,21 +60,21 @@ final class TodayViewModel: ObservableObject {
         guard amount > 0 else { return }
         let ctx = stack.viewContext
         LogEntry.create(trackerID: trackerID, amount: amount, in: ctx)
-        stack.saveViewContext()
+        if let error = stack.saveViewContext() { lastError = error }
         fetchTodayEntries()
     }
 
     func deleteEntry(_ entry: LogEntry) {
         let ctx = stack.viewContext
         ctx.delete(entry)
-        stack.saveViewContext()
+        if let error = stack.saveViewContext() { lastError = error }
         fetchTodayEntries()
     }
 
     func updateEntry(_ entry: LogEntry, amount: Double) {
         guard amount > 0 else { return }
         entry.amount = amount
-        stack.saveViewContext()
+        if let error = stack.saveViewContext() { lastError = error }
         fetchTodayEntries()
     }
 }

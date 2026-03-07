@@ -51,19 +51,28 @@ struct BarGraphView: View {
 
     // MARK: - Helpers
 
+    private static let weekRangeFmt: DateFormatter = {
+        let f = DateFormatter()
+        f.dateFormat = "MMM d"
+        return f
+    }()
+
+    private static let monthRangeFmt: DateFormatter = {
+        let f = DateFormatter()
+        f.dateFormat = "MMMM yyyy"
+        return f
+    }()
+
     private var pageRangeLabel: String {
         let offset = -currentPage
         let dates = isWeekly
             ? DateHelpers.datesInWeek(offsetBy: offset)
             : DateHelpers.datesInMonth(offsetBy: offset)
         guard let first = dates.first, let last = dates.last else { return "" }
-        let fmt = DateFormatter()
         if isWeekly {
-            fmt.dateFormat = "MMM d"
-            return "\(fmt.string(from: first)) – \(fmt.string(from: last))"
+            return "\(BarGraphView.weekRangeFmt.string(from: first)) – \(BarGraphView.weekRangeFmt.string(from: last))"
         } else {
-            fmt.dateFormat = "MMMM yyyy"
-            return fmt.string(from: first)
+            return BarGraphView.monthRangeFmt.string(from: first)
         }
     }
 

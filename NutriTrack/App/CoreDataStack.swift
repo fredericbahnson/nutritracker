@@ -7,6 +7,7 @@ final class CoreDataStack: @unchecked Sendable {
     static let shared = CoreDataStack()
 
     let container: NSPersistentContainer
+    private(set) var loadError: Error?
 
     var viewContext: NSManagedObjectContext {
         container.viewContext
@@ -17,11 +18,11 @@ final class CoreDataStack: @unchecked Sendable {
 
         container.loadPersistentStores { _, error in
             if let error {
-                // In production, surface this via a diagnostic UI rather than crashing.
-                fatalError("Core Data failed to load: \(error.localizedDescription)")
+                self.loadError = error
             }
         }
 
+        guard loadError == nil else { return }
         container.viewContext.automaticallyMergesChangesFromParent = true
         container.viewContext.mergePolicy = NSMergePolicy(merge: .mergeByPropertyObjectTrumpMergePolicyType)
     }
@@ -36,22 +37,28 @@ final class CoreDataStack: @unchecked Sendable {
 
     // MARK: - Save
 
-    func saveViewContext() {
+    @discardableResult
+    func saveViewContext() -> Error? {
         let ctx = container.viewContext
-        guard ctx.hasChanges else { return }
+        guard ctx.hasChanges else { return nil }
         do {
             try ctx.save()
+            return nil
         } catch {
             ctx.rollback()
+            return error
         }
     }
 
-    func save(context: NSManagedObjectContext) {
-        guard context.hasChanges else { return }
+    @discardableResult
+    func save(context: NSManagedObjectContext) -> Error? {
+        guard context.hasChanges else { return nil }
         do {
             try context.save()
+            return nil
         } catch {
             context.rollback()
+            return error
         }
     }
 }

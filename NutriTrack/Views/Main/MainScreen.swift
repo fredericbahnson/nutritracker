@@ -35,6 +35,29 @@ struct MainScreen: View {
             actionBar(activeTrackers: activeTrackers)
         }
         .ignoresSafeArea(.keyboard)
+        .overlay(alignment: .top) {
+            if todayVM.lastError != nil {
+                HStack(spacing: 8) {
+                    Image(systemName: "exclamationmark.circle.fill")
+                    Text("Failed to save — please try again")
+                        .font(Typography.label)
+                    Spacer()
+                    Button { todayVM.lastError = nil } label: {
+                        Image(systemName: "xmark")
+                    }
+                    .accessibilityLabel("Dismiss error")
+                }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 10)
+                .background(Color(.systemRed).opacity(0.9))
+                .foregroundStyle(.white)
+                .cornerRadius(8)
+                .padding(.horizontal, 16)
+                .padding(.top, 8)
+                .transition(.move(edge: .top).combined(with: .opacity))
+            }
+        }
+        .animation(.easeInOut(duration: 0.3), value: todayVM.lastError != nil)
         .sheet(isPresented: $showSettings) {
             SettingsScreen()
                 .environmentObject(settingsVM)

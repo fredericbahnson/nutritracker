@@ -13,18 +13,23 @@ struct NutriTrackApp: App {
 
     var body: some Scene {
         WindowGroup {
-            MainScreen()
-                .environmentObject(todayVM)
-                .environmentObject(settingsVM)
-                .environmentObject(themeColors)
-                .environment(\.managedObjectContext, stack.viewContext)
-                .preferredColorScheme(colorScheme)
-                .onAppear {
-                    todayVM.fetchTodayEntries()
-                }
-                .onOpenURL { _ in
-                    // nutritrack:// received — app is already at MainScreen, nothing to do
-                }
+            if let error = stack.loadError {
+                CoreDataErrorView(error: error)
+                    .preferredColorScheme(colorScheme)
+            } else {
+                MainScreen()
+                    .environmentObject(todayVM)
+                    .environmentObject(settingsVM)
+                    .environmentObject(themeColors)
+                    .environment(\.managedObjectContext, stack.viewContext)
+                    .preferredColorScheme(colorScheme)
+                    .onAppear {
+                        todayVM.fetchTodayEntries()
+                    }
+                    .onOpenURL { _ in
+                        // nutritrack:// received — app is already at MainScreen, nothing to do
+                    }
+            }
         }
     }
 
@@ -34,5 +39,31 @@ struct NutriTrackApp: App {
         case "dark": return .dark
         default: return nil
         }
+    }
+}
+
+// MARK: - CoreDataErrorView
+
+private struct CoreDataErrorView: View {
+    let error: Error
+
+    var body: some View {
+        VStack(spacing: 16) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .font(.system(size: 48))
+                .foregroundStyle(.orange)
+            Text("Unable to Load Data")
+                .font(.title2).fontWeight(.semibold)
+            Text("NutriTrack could not open its database. Try restarting the app. If the problem persists, reinstalling may resolve it.")
+                .font(.body)
+                .multilineTextAlignment(.center)
+                .foregroundStyle(Color(.secondaryLabel))
+            Text(error.localizedDescription)
+                .font(.caption)
+                .foregroundStyle(Color(.tertiaryLabel))
+                .multilineTextAlignment(.center)
+        }
+        .padding(32)
+        .accessibilityElement(children: .combine)
     }
 }

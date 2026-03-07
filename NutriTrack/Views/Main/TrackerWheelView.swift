@@ -77,6 +77,20 @@ struct TrackerWheelView: View {
     }
 
     var body: some View {
+        wheelBody
+    }
+
+    @ViewBuilder
+    private var wheelBody: some View {
+        if onTap != nil {
+            baseWheel
+                .accessibilityHint(Text("Tap to log \(tracker.displayName)"))
+        } else {
+            baseWheel
+        }
+    }
+
+    private var baseWheel: some View {
         ZStack(alignment: .leading) {
             Canvas { ctx, canvasSize in
                 let center = CGPoint(x: ringOuter, y: canvasSize.height / 2)
@@ -153,7 +167,6 @@ struct TrackerWheelView: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text(tracker.displayName))
         .accessibilityValue(Text(accessibilityValue))
-        .accessibilityHint(onTap != nil ? Text("Tap to log \(tracker.displayName)") : Text(""))
     }
 
     // MARK: - Accessibility

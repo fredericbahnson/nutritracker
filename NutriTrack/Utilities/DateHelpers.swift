@@ -90,10 +90,12 @@ enum DateHelpers {
         let today = Date()
         let weekday = cal.component(.weekday, from: today)
         let daysSinceMonday = (weekday + 5) % 7
-        let thisMonday = cal.date(byAdding: .day, value: -daysSinceMonday,
-                                  to: cal.startOfDay(for: today))!
-        let targetMonday = cal.date(byAdding: .weekOfYear, value: weekOffset,
-                                    to: thisMonday)!
+        guard
+            let thisMonday = cal.date(byAdding: .day, value: -daysSinceMonday,
+                                      to: cal.startOfDay(for: today)),
+            let targetMonday = cal.date(byAdding: .weekOfYear, value: weekOffset,
+                                        to: thisMonday)
+        else { return [] }
         return (0..<7).compactMap { cal.date(byAdding: .day, value: $0, to: targetMonday) }
     }
 
@@ -101,10 +103,10 @@ enum DateHelpers {
     /// monthOffset 0 = this month, -1 = last month, etc.
     static func datesInMonth(offsetBy monthOffset: Int) -> [Date] {
         let cal = Calendar.current
-        let target = cal.date(byAdding: .month, value: monthOffset, to: Date())!
+        guard let target = cal.date(byAdding: .month, value: monthOffset, to: Date()) else { return [] }
         let comps = cal.dateComponents([.year, .month], from: target)
-        let first = cal.date(from: comps)!
-        let days = cal.range(of: .day, in: .month, for: first)!.count
+        guard let first = cal.date(from: comps) else { return [] }
+        let days = cal.range(of: .day, in: .month, for: first)?.count ?? 30
         return (0..<days).compactMap { cal.date(byAdding: .day, value: $0, to: first) }
     }
 }

@@ -12,6 +12,7 @@ final class SettingsViewModel: ObservableObject {
     @AppStorage("waterUnit") private var waterUnitRaw: String = WaterUnit.flOz.rawValue
     @AppStorage("appearanceMode") var appearanceMode: String = "system"
     @AppStorage("dayResetHour") var dayResetHour: Int = 0
+    @AppStorage("migrationVersion") private var migrationVersion: Int = 0
 
     @Published var trackers: [TrackerType] = []
     @Published var presets: [QuickAddPreset] = []
@@ -28,16 +29,19 @@ final class SettingsViewModel: ObservableObject {
         presets = QuickAddPreset.load(from: quickAddPresetsData) ?? QuickAddPreset.defaults
         waterUnit = WaterUnit(rawValue: waterUnitRaw) ?? .flOz
 
-        // Migrate stale icon names from previous builds
-        if trackers.contains(where: { $0.iconName == "dna" || $0.iconName == "figure.strengthtraining.traditional" }) {
-            trackers = trackers.map { tracker in
-                var t = tracker
-                if t.iconName == "dna" || t.iconName == "figure.strengthtraining.traditional" {
-                    t.iconName = "custom.helix"
+        // Migrate stale icon names from previous builds (runs once per install)
+        if migrationVersion < 1 {
+            if trackers.contains(where: { $0.iconName == "dna" || $0.iconName == "figure.strengthtraining.traditional" }) {
+                trackers = trackers.map { tracker in
+                    var t = tracker
+                    if t.iconName == "dna" || t.iconName == "figure.strengthtraining.traditional" {
+                        t.iconName = "custom.helix"
+                    }
+                    return t
                 }
-                return t
+                saveTrackers()
             }
-            saveTrackers()
+            migrationVersion = 1
         }
 
         // Update water unit display on trackers
