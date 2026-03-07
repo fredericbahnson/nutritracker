@@ -24,7 +24,7 @@ struct TrackerWheelView: View {
     private var iconSize: CGFloat   { pieRadius * 0.42 }
 
     private var effectiveLabelColor: Color {
-        tracker.labelColor == "adaptive" ? Color(.label) : effectiveLabelColor
+        tracker.labelColor == "adaptive" ? Color(.label) : Color(hex: tracker.labelColor)
     }
 
     // Fractions (animated)
