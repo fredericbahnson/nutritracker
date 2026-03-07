@@ -47,7 +47,7 @@ struct MainScreen: View {
         }
         .sheet(isPresented: $showEntry) {
             EntryAreaView(activeTrackers: activeTrackers, initialTrackerID: entryInitialTrackerID)
-                .presentationDetents([.medium, .large])
+                .presentationDetents([.fraction(0.65), .large])
                 .presentationDragIndicator(.visible)
                 .environmentObject(todayVM)
                 .environmentObject(settingsVM)

@@ -35,7 +35,8 @@ struct EntryAreaView: View {
     }
 
     var body: some View {
-        ScrollView {
+        VStack(spacing: 0) {
+            // Fixed section — keypad always fully visible at medium detent
             VStack(spacing: 8) {
                 // Tracker selector (2+ trackers)
                 if activeTrackers.count > 1 {
@@ -59,15 +60,22 @@ struct EntryAreaView: View {
                     dismiss()
                 }
                 .padding(.horizontal, 4)
-
-                // Inline today's log
-                if !todayEntries.isEmpty, let tracker = selectedTracker {
-                    todayLogSection(entries: todayEntries, tracker: tracker)
-                }
             }
             .padding(.horizontal, 16)
-            .padding(.top, 20)
-            .padding(.bottom, 24)
+            .padding(.top, 4)
+            .padding(.bottom, 8)
+
+            // Scrollable section — today's log only
+            if !todayEntries.isEmpty, let tracker = selectedTracker {
+                Divider()
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
+                ScrollView {
+                    todayLogSection(entries: todayEntries, tracker: tracker)
+                        .padding(.horizontal, 16)
+                        .padding(.bottom, 24)
+                }
+            }
         }
         .onChange(of: activeTrackers) { _, newTrackers in
             if !newTrackers.contains(where: { $0.id == selectedTrackerID }) {
