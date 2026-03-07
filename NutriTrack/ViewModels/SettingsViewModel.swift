@@ -10,7 +10,7 @@ final class SettingsViewModel: ObservableObject {
     @AppStorage("trackerConfigs") private var trackerConfigsData: Data = Data()
     @AppStorage("quickAddPresets") private var quickAddPresetsData: Data = Data()
     @AppStorage("waterUnit") private var waterUnitRaw: String = WaterUnit.flOz.rawValue
-    @AppStorage("appearanceMode") var appearanceMode: String = "system"
+    @AppStorage("appearanceMode") var appearanceMode: String = "dark"
     @AppStorage("dayResetHour") var dayResetHour: Int = 0
     @AppStorage("migrationVersion") private var migrationVersion: Int = 0
 
