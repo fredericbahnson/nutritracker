@@ -5,6 +5,7 @@ import SwiftUI
 @main
 struct NutriTrackApp: App {
     @AppStorage("appearanceMode") private var appearanceMode: String = "system"
+    @Environment(\.scenePhase) private var scenePhase
 
     private let stack = CoreDataStack.shared
     @StateObject private var todayVM = TodayViewModel()
@@ -29,6 +30,11 @@ struct NutriTrackApp: App {
                     .onOpenURL { _ in
                         // nutritrack:// received — app is already at MainScreen, nothing to do
                     }
+            }
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase == .active {
+                todayVM.fetchTodayEntries()
             }
         }
     }
