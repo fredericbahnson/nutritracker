@@ -8,16 +8,15 @@ struct BarGraphView: View {
 
     @EnvironmentObject private var historyVM: HistoryViewModel
 
-    @State private var currentPage: Int = 0
+    @State private var currentOffset: Int = 0
     @State private var animationProgress: CGFloat = 0
 
     private var pageCount: Int { isWeekly ? 52 : 24 }
 
     var body: some View {
         VStack(spacing: 0) {
-            TabView(selection: $currentPage) {
-                ForEach(0..<pageCount, id: \.self) { pageIndex in
-                    let offset = -pageIndex
+            TabView(selection: $currentOffset) {
+                ForEach(-(pageCount - 1)...0, id: \.self) { offset in
                     let dates = isWeekly
                         ? DateHelpers.datesInWeek(offsetBy: offset)
                         : DateHelpers.datesInMonth(offsetBy: offset)
@@ -32,7 +31,7 @@ struct BarGraphView: View {
                         isWeekly: isWeekly,
                         animationProgress: animationProgress
                     )
-                    .tag(pageIndex)
+                    .tag(offset)
                     .padding(.horizontal, 16)
                 }
             }
@@ -46,7 +45,7 @@ struct BarGraphView: View {
         }
         .onAppear { triggerAnimation() }
         .onChange(of: tracker.id) { _, _ in triggerAnimation() }
-        .onChange(of: currentPage) { _, _ in triggerAnimation() }
+        .onChange(of: currentOffset) { _, _ in triggerAnimation() }
     }
 
     // MARK: - Helpers
@@ -64,10 +63,9 @@ struct BarGraphView: View {
     }()
 
     private var pageRangeLabel: String {
-        let offset = -currentPage
         let dates = isWeekly
-            ? DateHelpers.datesInWeek(offsetBy: offset)
-            : DateHelpers.datesInMonth(offsetBy: offset)
+            ? DateHelpers.datesInWeek(offsetBy: currentOffset)
+            : DateHelpers.datesInMonth(offsetBy: currentOffset)
         guard let first = dates.first, let last = dates.last else { return "" }
         if isWeekly {
             return "\(BarGraphView.weekRangeFmt.string(from: first)) – \(BarGraphView.weekRangeFmt.string(from: last))"
