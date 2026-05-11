@@ -9,8 +9,7 @@ struct MainScreen: View {
 
     @State private var showSettings: Bool = false
     @State private var showHistory: Bool = false
-    @State private var showEntry: Bool = false
-    @State private var entryInitialTrackerID: String? = nil
+    @State private var entryTracker: TrackerType? = nil
 
     var body: some View {
         let activeTrackers = settingsVM.activeTrackers
@@ -23,8 +22,7 @@ struct MainScreen: View {
                     trackers: activeTrackers,
                     availableSize: geo.size,
                     onTrackerTapped: { tracker in
-                        entryInitialTrackerID = tracker.id
-                        showEntry = true
+                        entryTracker = tracker
                     }
                 )
                 .environmentObject(todayVM)
@@ -68,8 +66,8 @@ struct MainScreen: View {
                 .environmentObject(settingsVM)
                 .environmentObject(themeColors)
         }
-        .sheet(isPresented: $showEntry) {
-            EntryAreaView(activeTrackers: activeTrackers, initialTrackerID: entryInitialTrackerID)
+        .sheet(item: $entryTracker) { tracker in
+            EntryAreaView(activeTrackers: activeTrackers, initialTrackerID: tracker.id)
                 .presentationDetents([.fraction(0.65), .large])
                 .presentationDragIndicator(.visible)
                 .environmentObject(todayVM)
@@ -97,8 +95,7 @@ struct MainScreen: View {
 
             // Center Log pill
             Button {
-                entryInitialTrackerID = nil
-                showEntry = true
+                entryTracker = activeTrackers.first
             } label: {
                 Image(systemName: "plus")
                     .font(.system(size: 20, weight: .semibold))
