@@ -50,7 +50,7 @@ NutriTrack is a minimalist iOS app for tracking daily intake goals — initially
 
 **Build commands:**
 ```bash
-cd "/Users/fredericbahnson/Library/Mobile Documents/com~apple~CloudDocs/nutritracker"
+cd /Users/fredericbahnson/Developer/nutritracker
 
 # Regenerate .xcodeproj after editing project.yml or adding files
 xcodegen generate
