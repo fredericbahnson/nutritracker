@@ -31,6 +31,7 @@ struct SettingsScreen: View {
         NavigationStack {
             Form {
                 trackingSection
+                streakSection
                 goalsSection
                 appearanceSection
                 colorsSection
@@ -100,6 +101,29 @@ struct SettingsScreen: View {
                 Label("Add Custom Tracker", systemImage: "plus.circle.fill")
             }
             .accessibilityLabel("Add a custom tracker")
+        }
+    }
+
+    // MARK: - Streak section
+
+    private var streakSection: some View {
+        Section {
+            Picker(selection: Binding(
+                get: { settingsVM.streakMode },
+                set: { settingsVM.setStreakMode($0) }
+            )) {
+                ForEach(StreakMode.allCases) { mode in
+                    Text(mode.displayName).tag(mode)
+                }
+            } label: {
+                Text("Mode")
+            }
+            .pickerStyle(.menu)
+            .accessibilityLabel("Streak mode")
+        } header: {
+            Text("Streak")
+        } footer: {
+            Text(settingsVM.streakMode.footerDescription)
         }
     }
 

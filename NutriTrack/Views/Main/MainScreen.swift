@@ -5,10 +5,11 @@ import SwiftUI
 struct MainScreen: View {
     @EnvironmentObject private var todayVM: TodayViewModel
     @EnvironmentObject private var settingsVM: SettingsViewModel
+    @EnvironmentObject private var streakVM: StreakViewModel
     @EnvironmentObject private var themeColors: ThemeColors
+    @Environment(\.scenePhase) private var scenePhase
 
     @State private var showSettings: Bool = false
-    @State private var showHistory: Bool = false
     @State private var entryTracker: TrackerType? = nil
 
     var body: some View {
@@ -61,17 +62,27 @@ struct MainScreen: View {
                 .environmentObject(settingsVM)
                 .environmentObject(themeColors)
         }
-        .sheet(isPresented: $showHistory) {
-            HistoryScreen()
-                .environmentObject(settingsVM)
-                .environmentObject(themeColors)
-        }
         .sheet(item: $entryTracker) { tracker in
             EntryAreaView(activeTrackers: activeTrackers, initialTrackerID: tracker.id)
                 .presentationDetents([.fraction(0.65), .large])
                 .presentationDragIndicator(.visible)
                 .environmentObject(todayVM)
                 .environmentObject(settingsVM)
+        }
+        .task { refreshStreak() }
+        .onChange(of: todayVM.dailyTotals) { _, _ in refreshStreak() }
+        .onChange(of: settingsVM.trackers) { _, _ in refreshStreak() }
+        .onChange(of: settingsVM.streakMode) { _, _ in refreshStreak() }
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase == .active { refreshStreak() }
+        }
+    }
+
+    private func refreshStreak() {
+        let mode = settingsVM.streakMode
+        let trackers = settingsVM.activeTrackers
+        Task {
+            await streakVM.refreshStreak(mode: mode, activeTrackers: trackers)
         }
     }
 
@@ -110,17 +121,8 @@ struct MainScreen: View {
 
             Spacer()
 
-            // History — right
-            Button {
-                showHistory = true
-            } label: {
-                Image(systemName: "calendar")
-                    .font(.system(size: 22))
-                    .foregroundStyle(Color(.secondaryLabel))
-                    .padding(12)
-                    .background(Circle().fill(Color(.secondarySystemBackground)))
-            }
-            .accessibilityLabel("History")
+            // Streak — right
+            streakBadge
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 12)
@@ -135,7 +137,25 @@ struct MainScreen: View {
         }
     }
 
+    // MARK: - Streak badge
 
+    @ViewBuilder
+    private var streakBadge: some View {
+        if settingsVM.streakMode == .off {
+            // Invisible placeholder keeps the Log pill centered
+            Color.clear.frame(width: 46, height: 46)
+        } else {
+            Text("\(streakVM.streakCount)")
+                .font(Typography.sfRounded(size: 22, weight: .semibold))
+                .monospacedDigit()
+                .foregroundStyle(Color(.secondaryLabel))
+                .frame(minWidth: 46, minHeight: 46)
+                .accessibilityLabel("Current streak")
+                .accessibilityValue(
+                    streakVM.streakCount == 1 ? "1 day" : "\(streakVM.streakCount) days"
+                )
+        }
+    }
 }
 
 // MARK: - Preview
@@ -144,5 +164,6 @@ struct MainScreen: View {
     MainScreen()
         .environmentObject(TodayViewModel())
         .environmentObject(SettingsViewModel())
+        .environmentObject(StreakViewModel())
         .environmentObject(ThemeColors())
 }

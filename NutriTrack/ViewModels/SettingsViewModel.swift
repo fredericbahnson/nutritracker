@@ -13,10 +13,12 @@ final class SettingsViewModel: ObservableObject {
     @AppStorage("appearanceMode") var appearanceMode: String = "dark"
     @AppStorage("dayResetHour") var dayResetHour: Int = 0
     @AppStorage("migrationVersion") private var migrationVersion: Int = 0
+    @AppStorage("streakMode") private var streakModeRaw: String = StreakMode.off.rawValue
 
     @Published var trackers: [TrackerType] = []
     @Published var presets: [QuickAddPreset] = []
     @Published var waterUnit: WaterUnit = .flOz
+    @Published var streakMode: StreakMode = .off
 
     init() {
         loadAll()
@@ -28,6 +30,7 @@ final class SettingsViewModel: ObservableObject {
         trackers = TrackerType.load(from: trackerConfigsData) ?? TrackerType.defaults
         presets = QuickAddPreset.load(from: quickAddPresetsData) ?? QuickAddPreset.defaults
         waterUnit = WaterUnit(rawValue: waterUnitRaw) ?? .flOz
+        streakMode = StreakMode(rawValue: streakModeRaw) ?? .off
 
         // Migrate stale icon names from previous builds (runs once per install)
         if migrationVersion < 1 {
@@ -200,6 +203,13 @@ final class SettingsViewModel: ObservableObject {
 
     func tracker(for id: String) -> TrackerType? {
         trackers.first { $0.id == id }
+    }
+
+    // MARK: - Streak
+
+    func setStreakMode(_ mode: StreakMode) {
+        streakMode = mode
+        streakModeRaw = mode.rawValue
     }
 
     // MARK: - Water unit

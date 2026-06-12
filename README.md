@@ -8,8 +8,8 @@ A minimalist iOS app for tracking daily nutrition and hydration goals. Fast, pol
 - **Dual thresholds** — minimum goal and main goal per tracker, shown as distinct fill layers
 - **Flexible tracker types** — protein and water built in; add custom trackers (fiber, calories, etc.) with no code changes
 - **Quick-add presets** — one-tap logging for common amounts (e.g. "Water bottle – 16 fl oz")
-- **History heatmap** — weekly and monthly views with color-coded intensity tiers
-- **Today's log** — view, edit, and delete individual entries for the current day
+- **Streak counter** — optional minimalist streak on the main screen; count days tracked, minimum goals hit, or main goals hit (off by default)
+- **Today's log** — view, edit, and delete individual entries for the current day (no history UI — past days are never displayed)
 - **Dark mode** — full light/dark support; appearance can be forced or follow system
 - **Widget stub** — WidgetKit extension with App Group entitlement, ready to implement
 
@@ -78,16 +78,15 @@ xcodebuild test \
 ```
 NutriTrack/
 ├── App/                 App entry point, Core Data stack
-├── Models/              TrackerType, QuickAddPreset, LogEntry (Core Data)
-├── ViewModels/          TodayViewModel, HistoryViewModel, SettingsViewModel
+├── Models/              TrackerType, QuickAddPreset, StreakMode, LogEntry (Core Data)
+├── ViewModels/          TodayViewModel, StreakViewModel, SettingsViewModel
 ├── Views/
 │   ├── Main/            Main screen, tracker wheel, entry area, keypad, log sheet
-│   ├── History/         Heatmap (weekly + monthly), list view
 │   └── Settings/        Tracker config, color pickers, preset editor
 ├── Theme/               ThemeColors, Color(hex:) extension, Typography
-├── Utilities/           DateHelpers, UnitConversion (fl oz ↔ ml)
+├── Utilities/           DateHelpers, StreakCalculator, UnitConversion (fl oz ↔ ml)
 └── Resources/           Assets.xcassets
-NutriTrackTests/         21 unit tests (aggregation, unit conversion, heatmap tiers)
+NutriTrackTests/         41 unit tests (aggregation, unit conversion, streak calculation)
 NutriTrackWidget/        WidgetKit stub + WIDGET_TODO.md
 ```
 
@@ -98,7 +97,8 @@ NutriTrackWidget/        WidgetKit stub + WIDGET_TODO.md
 - **Tracker-generic** — every view iterates over an array of `TrackerType`; adding a new tracker requires only adding it to the registry and running a Core Data migration.
 - **AppStorage + Core Data split** — settings and goals live in `UserDefaults` (JSON-encoded); log history lives in Core Data.
 - **Canvas rendering** — `TrackerWheelView` uses SwiftUI `Canvas` for a single draw pass (pie, ring, overflow bar) with smooth 350ms easeInOut fill animations.
-- **No hardcoded colors** — all tracker and heatmap colors are hex strings stored in settings, resolved at render time via a `ThemeColors` environment object.
+- **No hardcoded colors** — all tracker colors are hex strings stored in settings, resolved at render time via a `ThemeColors` environment object.
+- **Streak, not history** — there is no history UI; the optional streak counter is always computed on the fly from `LogEntry` data (never stored), so changing streak mode or goals yields a correct number.
 - **Swift 6 concurrency** — ViewModels are `@MainActor`; Core Data fetches use `async/await`.
 - **Inline keypad** — always visible, no sheet dismissal required; supports one-handed use.
 
@@ -109,14 +109,14 @@ NutriTrackWidget/        WidgetKit stub + WIDGET_TODO.md
 | Protein | `#E8601C` | `#F4A261` | `#E76F51` |
 | Water | `#48CAE4` | `#0096C7` | `#023E8A` |
 
-### Heatmap Tiers
+### Streak Modes
 
-| Intake range | Color |
+| Mode | A day counts when… |
 |---|---|
-| 0 | Empty |
-| 0 – minimum goal | Green `#4CAF50` (opacity scales with progress) |
-| minimum – main goal | Blue `#2196F3` (opacity scales with progress) |
-| > main goal | Purple `#9C27B0` (opacity scales, capped at 2× goal) |
+| Off (default) | — no streak shown |
+| Days Tracked | at least one entry was logged |
+| Minimum Goals | every active tracker reached its minimum goal |
+| Main Goals | every active tracker reached its main goal |
 
 ---
 

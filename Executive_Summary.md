@@ -2,6 +2,8 @@
 
 > A comprehensive technical and product description for engineers joining the project or troubleshooting/extending the app.
 
+> **⚠️ Update (June 2026):** The History screen described in §8 (heatmaps, bar graph, list view) and `HistoryViewModel` have been **removed**. Past days are no longer viewable anywhere in the app. In their place is an optional minimalist **streak counter** (bottom-right of the main screen, configured in Settings → Streak, off by default) computed on the fly from `LogEntry` data by `StreakCalculator`/`StreakViewModel`. See CLAUDE.md §6 and DECISIONS.md for the current spec; history-related references below are retained for historical context only.
+
 ---
 
 ## Table of Contents

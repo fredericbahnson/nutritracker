@@ -10,6 +10,7 @@ struct NutriTrackApp: App {
     private let stack = CoreDataStack.shared
     @StateObject private var todayVM = TodayViewModel()
     @StateObject private var settingsVM = SettingsViewModel()
+    @StateObject private var streakVM = StreakViewModel()
     @StateObject private var themeColors = ThemeColors()
 
     var body: some Scene {
@@ -21,6 +22,7 @@ struct NutriTrackApp: App {
                 MainScreen()
                     .environmentObject(todayVM)
                     .environmentObject(settingsVM)
+                    .environmentObject(streakVM)
                     .environmentObject(themeColors)
                     .environment(\.managedObjectContext, stack.viewContext)
                     .preferredColorScheme(colorScheme)

@@ -109,38 +109,153 @@ final class NutriTrackTests: XCTestCase {
         XCTAssertEqual(result, 8.0, accuracy: 0.01)
     }
 
-    // MARK: - Heatmap color tier
+    // MARK: - Streak calculation
 
-    func testHeatmapColorTierZero() {
-        let tracker = TrackerType.defaults[0]
-        let colors = HeatmapColors()
-        let color = colors.color(for: 0, tracker: tracker)
-        // Zero amount returns a dim fill color — just verify it doesn't crash
-        _ = color
+    /// Start of the day `offset` days from today (offset 0 = today, -1 = yesterday).
+    private func day(_ offset: Int) -> Date {
+        let cal = Calendar.current
+        return cal.date(byAdding: .day, value: offset, to: cal.startOfDay(for: Date()))!
     }
 
-    func testHeatmapColorTierGreen() {
-        let tracker = TrackerType.defaults[0] // min=120, main=160
-        let colors = HeatmapColors()
-        // Below min → green tier
-        let color = colors.color(for: 60, tracker: tracker)
-        _ = color // Non-nil, not clear
+    /// protein (min 120, main 160) and water (min 80, main 120)
+    private var bothTrackers: [TrackerType] { TrackerType.defaults }
+
+    func testStreakOffModeIsZero() {
+        let totals: [Date: [String: Double]] = [
+            day(0): ["protein": 200, "water": 200],
+            day(-1): ["protein": 200, "water": 200]
+        ]
+        XCTAssertEqual(
+            StreakCalculator.currentStreak(mode: .off, activeTrackers: bothTrackers, dayTotals: totals),
+            0
+        )
     }
 
-    func testHeatmapColorTierBlue() {
-        let tracker = TrackerType.defaults[0] // min=120, main=160
-        let colors = HeatmapColors()
-        // Between min and main → blue tier
-        let color = colors.color(for: 140, tracker: tracker)
-        _ = color
+    func testStreakNoDataIsZero() {
+        XCTAssertEqual(
+            StreakCalculator.currentStreak(mode: .daysTracked, activeTrackers: bothTrackers, dayTotals: [:]),
+            0
+        )
     }
 
-    func testHeatmapColorTierPurple() {
-        let tracker = TrackerType.defaults[0] // main=160
-        let colors = HeatmapColors()
-        // Above main → purple tier
-        let color = colors.color(for: 200, tracker: tracker)
-        _ = color
+    func testStreakNoActiveTrackersIsZero() {
+        let totals: [Date: [String: Double]] = [day(0): ["protein": 200]]
+        XCTAssertEqual(
+            StreakCalculator.currentStreak(mode: .daysTracked, activeTrackers: [], dayTotals: totals),
+            0
+        )
+    }
+
+    func testStreakDaysTrackedCountsConsecutiveDaysIncludingToday() {
+        let totals: [Date: [String: Double]] = [
+            day(0): ["protein": 10],
+            day(-1): ["water": 5],
+            day(-2): ["protein": 1]
+        ]
+        XCTAssertEqual(
+            StreakCalculator.currentStreak(mode: .daysTracked, activeTrackers: bothTrackers, dayTotals: totals),
+            3
+        )
+    }
+
+    func testStreakUnloggedTodayDoesNotBreakStreak() {
+        // Nothing logged today — the day isn't over, so the streak holds at 2
+        let totals: [Date: [String: Double]] = [
+            day(-1): ["protein": 10],
+            day(-2): ["protein": 10]
+        ]
+        XCTAssertEqual(
+            StreakCalculator.currentStreak(mode: .daysTracked, activeTrackers: bothTrackers, dayTotals: totals),
+            2
+        )
+    }
+
+    func testStreakGapBreaksStreak() {
+        // Yesterday empty → only today counts
+        let totals: [Date: [String: Double]] = [
+            day(0): ["protein": 10],
+            day(-2): ["protein": 10],
+            day(-3): ["protein": 10]
+        ]
+        XCTAssertEqual(
+            StreakCalculator.currentStreak(mode: .daysTracked, activeTrackers: bothTrackers, dayTotals: totals),
+            1
+        )
+    }
+
+    func testStreakMinimumGoalsRequiresAllActiveTrackers() {
+        // Today: both minimums hit. Yesterday: water short of its 80 minimum.
+        let totals: [Date: [String: Double]] = [
+            day(0): ["protein": 120, "water": 80],
+            day(-1): ["protein": 150, "water": 50]
+        ]
+        XCTAssertEqual(
+            StreakCalculator.currentStreak(mode: .minimumGoals, activeTrackers: bothTrackers, dayTotals: totals),
+            1
+        )
+        // The same data counts as 2 days under daysTracked
+        XCTAssertEqual(
+            StreakCalculator.currentStreak(mode: .daysTracked, activeTrackers: bothTrackers, dayTotals: totals),
+            2
+        )
+    }
+
+    func testStreakMainGoalsRequiresAllActiveTrackers() {
+        let totals: [Date: [String: Double]] = [
+            day(0): ["protein": 160, "water": 120],
+            day(-1): ["protein": 160, "water": 120],
+            day(-2): ["protein": 159, "water": 120] // protein 1g short of main goal
+        ]
+        XCTAssertEqual(
+            StreakCalculator.currentStreak(mode: .mainGoals, activeTrackers: bothTrackers, dayTotals: totals),
+            2
+        )
+    }
+
+    func testStreakGoalModesIgnoreInactiveTrackerEntries() {
+        // Logging on a tracker that isn't active counts for daysTracked,
+        // but doesn't satisfy the active trackers' goals.
+        let protein = TrackerType.defaults[0]
+        let totals: [Date: [String: Double]] = [day(0): ["custom_fiber": 30]]
+        XCTAssertEqual(
+            StreakCalculator.currentStreak(mode: .daysTracked, activeTrackers: [protein], dayTotals: totals),
+            1
+        )
+        XCTAssertEqual(
+            StreakCalculator.currentStreak(mode: .minimumGoals, activeTrackers: [protein], dayTotals: totals),
+            0
+        )
+    }
+
+    func testStreakZeroGoalsStillRequireLogging() {
+        var tracker = TrackerType.defaults[0]
+        tracker.minimumGoal = 0
+        tracker.mainGoal = 0
+        // Yesterday had an entry, the day before none — zero goals must not
+        // turn empty days into qualifying days.
+        let totals: [Date: [String: Double]] = [day(-1): ["protein": 5]]
+        XCTAssertEqual(
+            StreakCalculator.currentStreak(mode: .minimumGoals, activeTrackers: [tracker], dayTotals: totals),
+            1
+        )
+    }
+
+    func testStreakLongRun() {
+        var totals: [Date: [String: Double]] = [:]
+        for offset in -29...0 {
+            totals[day(offset)] = ["protein": 200, "water": 200]
+        }
+        XCTAssertEqual(
+            StreakCalculator.currentStreak(mode: .mainGoals, activeTrackers: bothTrackers, dayTotals: totals),
+            30
+        )
+    }
+
+    func testStreakModeRawValueRoundTrip() {
+        for mode in StreakMode.allCases {
+            XCTAssertEqual(StreakMode(rawValue: mode.rawValue), mode)
+        }
+        XCTAssertNil(StreakMode(rawValue: "garbage"))
     }
 
     // MARK: - DateHelpers
@@ -223,7 +338,7 @@ final class NutriTrackTests: XCTestCase {
 
         let decoded = try JSONDecoder().decode(TrackerType.self, from: oldJSON)
         XCTAssertNil(decoded.iconName)
-        XCTAssertEqual(decoded.labelColor, "#FFFFFF")
+        XCTAssertEqual(decoded.labelColor, "adaptive")
     }
 
     // MARK: - TrackerIconLibrary

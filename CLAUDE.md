@@ -6,7 +6,9 @@
 
 ## 1. Project Overview
 
-NutriTrack is a minimalist iOS app for tracking daily intake goals (protein, water, and extensible to additional nutrients). It is fast, polished, and built for one-handed daily use. Its defining features are a beautiful visual progress display, a configurable goal system with dual thresholds (minimum + main), a flexible history heatmap, and an architecture that can support up to ~6 tracker types without redesign.
+NutriTrack is a minimalist iOS app for tracking daily intake goals (protein, water, and extensible to additional nutrients). It is fast, polished, and built for one-handed daily use. Its defining features are a beautiful visual progress display, a configurable goal system with dual thresholds (minimum + main), an optional minimalist streak counter, and an architecture that can support up to ~6 tracker types without redesign.
+
+There is deliberately **no history UI**: past days cannot be viewed, listed, or charted. Log entries are still persisted in Core Data (they drive today's totals and the streak calculation), but the only surface that reflects past days is the streak number.
 
 ---
 
@@ -78,6 +80,7 @@ appearanceMode: "system" | "light" | "dark"
 trackerConfigs: Data               // JSON-encoded [TrackerType] for goals + colors
 quickAddPresets: Data              // JSON-encoded [QuickAddPreset]
 dayResetHour: Int = 0             // always 0 (midnight), kept as setting for future extensibility
+streakMode: "off" | "daysTracked" | "minimumGoals" | "mainGoals"   // default "off"
 ```
 
 ### 3.4 Default Values (pre-loaded on first launch)
@@ -109,7 +112,7 @@ Replace placeholder colors with a genuinely attractive, accessible palette befor
 The main screen has three zones:
 1. **Progress display** (top, ≥66% of screen height) — tracker wheels
 2. **Entry area** (bottom, ~20% of screen height) — input controls
-3. **Nav icons** — bottom-left (settings) and bottom-right (history), always visible
+3. **Action bar** — settings icon bottom-left, streak counter bottom-right (only when streak tracking is enabled), always visible
 
 ### 4.2 Progress Display — Single Tracker
 
@@ -183,6 +186,10 @@ Accessed via a small gear icon (SF Symbol: `gearshape.fill`) in the bottom-left 
 - Display order drag-reorder for active trackers
 - "Add custom tracker" button (opens a form: name, unit, min goal, main goal)
 
+**Streak** (below Tracking, above Goals)
+- Mode picker: Off (default) / Days Tracked / Minimum Goals / Main Goals
+- Footer text explains the selected mode (see section 6)
+
 **Goals** (one section per active tracker)
 - Minimum goal (numeric field + unit)
 - Main goal (numeric field + unit)
@@ -202,55 +209,32 @@ Accessed via a small gear icon (SF Symbol: `gearshape.fill`) in the bottom-left 
 
 ---
 
-## 6. History Screen
+## 6. Streak
 
-Accessed via a small calendar icon (SF Symbol: `calendar`) in the bottom-right corner of the main screen.
+The app's only acknowledgment of past days. Replaces the former History screen.
 
-### 6.1 Layout
+### 6.1 Display
 
-- **Top:** Tracker selector — a segmented control or pill tabs showing all active tracker names. Determines which tracker's data is displayed.
-- **Middle:** Heatmap display (see 6.2)
-- **Bottom-left:** List icon (SF Symbol: `list.bullet`) — switches to list view
-- **Bottom-right:** Home icon (SF Symbol: `house.fill`) — returns to main screen
+- The current streak is rendered as a plain number — no icon, no background — in the bottom-right corner of the main screen's action bar (the slot the history/calendar icon used to occupy).
+- Typography: SF Rounded, secondary label color. Display-only, not tappable. Has `.accessibilityLabel`/`.accessibilityValue`.
+- When `streakMode == off` (the default), nothing is shown; an invisible placeholder keeps the action bar layout balanced.
 
-### 6.2 Heatmap
+### 6.2 Modes (`streakMode`)
 
-Each day is a colored square. Color is determined by intake relative to goals:
-
-| Intake range | Color behavior |
+| Mode | A day qualifies when… |
 |---|---|
-| 0 | Empty / background color |
-| 0 < intake ≤ minimumGoal | Green, opacity scales from ~10% to 100% |
-| minimumGoal < intake ≤ mainGoal | Blue, opacity scales from ~10% to 100% |
-| intake > mainGoal | Purple, opacity scales from ~10% to ~100% (capped at `2 × mainGoal`) |
+| `off` (default) | — (no streak shown) |
+| `daysTracked` | at least one entry was logged that day (any tracker, any amount) |
+| `minimumGoals` | every active tracker reached its minimum goal |
+| `mainGoals` | every active tracker reached its main goal |
 
-**All three colors (green, blue, purple) must be theme tokens — not hardcoded.** Default values: green `#4CAF50`, blue `#2196F3`, purple `#9C27B0`.
+### 6.3 Semantics
 
-The heatmap does NOT show individual log entries when tapped — it shows daily totals only.
-
-### 6.3 Weekly View
-
-- 7 squares across the full width of the screen.
-- Day labels (M T W T F S S) above each column.
-- Current week is the rightmost week visible on first load.
-- **Swipe right** scrolls back in time (previous weeks). Swipe left scrolls forward. Use `TabView` with `PageTabViewStyle` or a custom gesture-driven `ScrollView` — must feel smooth and native.
-- Dates are shown below each square (e.g., "3", "4").
-- Today's square has a subtle outline or indicator.
-
-### 6.4 Monthly View
-
-- Full calendar month grid (Mon–Sun columns, rows of weeks).
-- Month + year shown as header.
-- **Swipe up** = previous month. **Swipe down** = next month. Use vertical paging.
-- Days outside the current month are shown dimmed or empty.
-
-### 6.5 View Selector
-
-A simple segmented control at the top switches between Weekly and Monthly views. The tracker selector sits above this.
-
-### 6.6 List View
-
-Replaces the heatmap with a vertically scrolling list. Each row: date, total intake, unit, and a small colored dot matching the heatmap color tier. Most recent at top. Tapping a row does nothing (no detail view — totals only).
+- The streak is the count of consecutive qualifying days ending today. Today counts as soon as it qualifies; an unqualified today does **not** break the streak (the day isn't over yet) — counting continues from yesterday.
+- A day with no entries never qualifies, even when every goal is 0.
+- Goal modes evaluate the currently active trackers against their current goals (goals are not versioned historically).
+- The streak is never stored — it is always computed from `LogEntry` data (`StreakCalculator` pure logic, fetched via `StreakViewModel`). Changing mode, goals, or active trackers therefore recomputes it correctly.
+- Recompute triggers: app appear/foreground, any entry add/edit/delete, and any change to streak mode, goals, or active trackers.
 
 ---
 
@@ -323,11 +307,12 @@ NutriTrack/
 ├── Models/
 │   ├── TrackerType.swift
 │   ├── QuickAddPreset.swift
+│   ├── StreakMode.swift
 │   ├── LogEntry+CoreData (generated)
 │   └── NutriTrack.xcdatamodeld
 ├── ViewModels/
 │   ├── TodayViewModel.swift
-│   ├── HistoryViewModel.swift
+│   ├── StreakViewModel.swift
 │   └── SettingsViewModel.swift
 ├── Views/
 │   ├── Main/
@@ -336,12 +321,6 @@ NutriTrack/
 │   │   ├── EntryAreaView.swift
 │   │   ├── QuickAddPresetRow.swift
 │   │   └── TodayLogSheet.swift
-│   ├── History/
-│   │   ├── HistoryScreen.swift
-│   │   ├── HeatmapView.swift
-│   │   ├── WeeklyHeatmapView.swift
-│   │   ├── MonthlyHeatmapView.swift
-│   │   └── HistoryListView.swift
 │   └── Settings/
 │       ├── SettingsScreen.swift
 │       ├── TrackerConfigView.swift
@@ -352,6 +331,7 @@ NutriTrack/
 │   └── Typography.swift
 ├── Utilities/
 │   ├── DateHelpers.swift
+│   ├── StreakCalculator.swift
 │   └── UnitConversion.swift
 └── NutriTrackWidget/
     ├── NutriTrackWidget.swift
@@ -369,7 +349,7 @@ NutriTrack/
 5. **Accessibility:** Every tappable element must have an `.accessibilityLabel`. Wheels must describe their state in `.accessibilityValue` (e.g., "95 grams, 59% of main goal").
 6. **No force unwraps** (`!`) outside of test code.
 7. **Preview providers** for every view, using mock data.
-8. **Unit tests** for: DailyTotal aggregation logic, unit conversion (fl oz ↔ ml), heatmap color tier calculation, goal percentage calculations.
+8. **Unit tests** for: DailyTotal aggregation logic, unit conversion (fl oz ↔ ml), streak calculation (all modes + edge cases), goal percentage calculations.
 
 ---
 
@@ -400,11 +380,10 @@ Build and verify each phase before moving to the next.
 - Appearance mode (light/dark/system)
 - Custom tracker creation
 
-**Phase 5 — History**
-- Heatmap color calculation
-- Weekly view with swipe navigation
-- Monthly view with swipe navigation
-- List view
+**Phase 5 — Streak**
+- `StreakCalculator` (pure logic) + unit tests
+- Streak mode setting (Settings section between Tracking and Goals)
+- Main-screen streak counter wired to entry/settings/foreground changes
 
 **Phase 6 — Polish**
 - Accessibility labels

@@ -38,44 +38,10 @@ extension Color {
     }
 }
 
-// MARK: - Heatmap color tokens
-
-struct HeatmapColors {
-    var green: String = "#4CAF50"
-    var blue: String = "#2196F3"
-    var purple: String = "#9C27B0"
-
-    func color(for amount: Double, tracker: TrackerType) -> Color {
-        guard amount > 0 else { return Color(.systemFill).opacity(0.3) }
-
-        let minGoal = tracker.minimumGoal
-        let mainGoal = tracker.mainGoal
-
-        if amount <= minGoal {
-            let opacity = min(amount / max(minGoal, 0.001), 1.0) * 0.9 + 0.1
-            return Color(hex: green).opacity(opacity)
-        } else if amount <= mainGoal {
-            let span = mainGoal - minGoal
-            let opacity = span > 0
-                ? min((amount - minGoal) / span, 1.0) * 0.9 + 0.1
-                : 1.0
-            return Color(hex: blue).opacity(opacity)
-        } else {
-            let overflow = mainGoal > 0
-                ? min((amount - mainGoal) / mainGoal, 1.0)
-                : 1.0
-            let opacity = overflow * 0.9 + 0.1
-            return Color(hex: purple).opacity(opacity)
-        }
-    }
-}
-
 // MARK: - ThemeColors environment object
 
 @MainActor
 final class ThemeColors: ObservableObject {
-    @Published var heatmap: HeatmapColors = HeatmapColors()
-
     // Resolve a tracker's pie color
     func pieColor(for tracker: TrackerType) -> Color {
         Color(hex: tracker.pieColor)
@@ -89,9 +55,5 @@ final class ThemeColors: ObservableObject {
     // Resolve a tracker's bar color
     func barColor(for tracker: TrackerType) -> Color {
         Color(hex: tracker.barColor)
-    }
-
-    func heatmapColor(for amount: Double, tracker: TrackerType) -> Color {
-        heatmap.color(for: amount, tracker: tracker)
     }
 }
