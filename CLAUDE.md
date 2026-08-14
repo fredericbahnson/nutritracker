@@ -402,3 +402,15 @@ Before starting, confirm or decide:
 - [ ] Exact SF Symbol choices for all icons
 
 Document all decisions made in a `DECISIONS.md` file in the repo root.
+
+## Copy Style
+
+All outward-facing text (UI strings, empty states, notifications, docs, marketing copy) must avoid AI-writing tells:
+
+- Em-dashes: rare. Prefer commas, colons, or sentence breaks.
+- No stock AI phrases: "delve", "seamless", "unlock", "elevate", "journey", "game-changer", "dives deep", "where the magic happens", "Whether you're X or Y", "no fluff", "isn't just".
+- Contrast frames ("not X, but Y"; "X, not Y" closers): at most one per screen or document, never in headings by default.
+- Don't default to rule-of-three lists; vary sentence shapes so adjacent items don't share one grammatical template.
+- No credibility boosters ("actually", "truly", "genuinely", "honestly") and no vague product adjectives ("intelligent", "powerful", "robust").
+- No "research-backed" or "science shows" without a source; never invent statistics.
+- Before shipping new user-visible text, do one tell-check pass against this list.
